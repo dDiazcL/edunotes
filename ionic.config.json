@@ -1,0 +1,7 @@
+{
+  "name": "edunotes",
+  "integrations": {
+    "capacitor": {}
+  },
+  "type": "angular"
+}
