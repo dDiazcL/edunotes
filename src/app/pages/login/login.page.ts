@@ -11,8 +11,8 @@ export class LoginPage implements OnInit {
 
   constructor(private router: Router) { }
 
-  goToHome() {
-    this.router.navigate(['/home']);
+  goToReset() {
+    this.router.navigate(['/reset-password']);
   }
 
   ngOnInit() {

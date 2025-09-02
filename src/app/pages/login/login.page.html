@@ -7,14 +7,14 @@
 <ion-content [fullscreen]="true" class="ion-padding">
   <ion-card>
     <ion-card-header>
-      <ion-card-tittle>Iniciar Sesión</ion-card-tittle>
+      <ion-card-title>Iniciar Sesión</ion-card-title>
       <ion-card-subtitle>Organiza y comparte apuntes</ion-card-subtitle>
     </ion-card-header>
     <ion-card-content>
       <ion-input label="Correo" labelPlacement="floating" type="email"></ion-input>
       <ion-input label="Contraseña" labelPlacement="floating" type="password"></ion-input>
-      <ion-button expand="block" (click)="goToHome()">Ingresar</ion-button>
-      <ion-button fill="clear" (click)="router.navigate(['/reset-password'])">¿Olvidaste tu contraseña?</ion-button>  
+      <ion-button expand="block" (click)="goToReset()">Ingresar</ion-button>
+      <ion-button fill="clear" (click)="goToReset()">¿Olvidaste tu contraseña?</ion-button>  
     </ion-card-content>
   </ion-card>
 </ion-content>
