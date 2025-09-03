@@ -15,6 +15,10 @@ export class LoginPage implements OnInit {
     this.router.navigate(['/reset-password']);
   }
 
+  goToHome() {
+    this.router.navigate(['/home']);
+  }
+
   ngOnInit() {
   }
 

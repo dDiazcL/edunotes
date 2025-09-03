@@ -25,3 +25,16 @@
 #container a {
   text-decoration: none;
 }
+
+h2 {
+  margin-bottom: 10px;
+  font-weight: bold;
+}
+
+ion-card {
+  transition: transform 0.2s ease-in-out;
+}
+
+ion-card:hover {
+  transform: scale(1.02);
+}
