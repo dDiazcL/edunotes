@@ -9,7 +9,18 @@ import { Router } from '@angular/router';
 })
 export class LoginPage implements OnInit {
 
+  email: string = '';
+  password: string = '';
+
   constructor(private router: Router) { }
+
+  login() {
+    if (this.email && this.password) {
+      this.router.navigate(['home']);
+    } else {
+      alert('Debes ingresar usuario y contraseña');
+    }
+  }
 
   goToReset() {
     this.router.navigate(['/reset-password']);

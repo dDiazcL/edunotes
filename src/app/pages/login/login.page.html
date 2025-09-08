@@ -1,20 +1,20 @@
-<ion-header [translucent]="true">
-  <ion-toolbar color="primary">
-    <ion-title>EduNotes</ion-title>
-  </ion-toolbar>
-</ion-header>
-
-<ion-content [fullscreen]="true" class="ion-padding">
+<ion-content class="ion-padding">
   <ion-card>
     <ion-card-header>
-      <ion-card-title>Iniciar Sesión</ion-card-title>
-      <ion-card-subtitle>Organiza y comparte apuntes</ion-card-subtitle>
+      <ion-card-title>Iniciar Sesion</ion-card-title>
     </ion-card-header>
+
     <ion-card-content>
-      <ion-input label="Correo" labelPlacement="floating" type="email"></ion-input>
-      <ion-input label="Contraseña" labelPlacement="floating" type="password"></ion-input>
-      <ion-button expand="block" (click)="goToHome()">Ingresar</ion-button>
-      <ion-button fill="clear" (click)="goToReset()">¿Olvidaste tu contraseña?</ion-button>  
+      <ion-item>
+        <ion-input [(ngModel)]="email" type="email" placeholder="Correo electronico"></ion-input>
+      </ion-item>
+
+      <ion-item>
+        <ion-input [(ngModel)]="password" type="password" placeholder="Contraseña"></ion-input>
+      </ion-item>
+
+      <ion-button expand="block" (click)="login()">Ingresar</ion-button>
+      <ion-button fill="clear" (click)="goToReset()">¿Olvidaste tu Contraseña?</ion-button>
     </ion-card-content>
   </ion-card>
 </ion-content>

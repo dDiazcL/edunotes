@@ -1,4 +1,5 @@
 import { Component, OnInit } from '@angular/core';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-reset-password',
@@ -8,9 +9,26 @@ import { Component, OnInit } from '@angular/core';
 })
 export class ResetPasswordPage implements OnInit {
 
-  constructor() { }
+  email: string = '';
+
+  constructor(private router: Router) { }
 
   ngOnInit() {
   }
+
+  sendReset() {
+    if(this.email) {
+      alert(`Se ha enviado un correo a ${this.email} para restrablecer la contraseña.`);
+      this.router.navigate(['/login']);
+    } else {
+      alert('Por favor ingresa tu correo electronico.');
+    }
+  }
+
+  goBack() {
+    this.router.navigate(['/login']);
+  }
+
+
 
 }
