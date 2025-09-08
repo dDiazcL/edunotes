@@ -12,10 +12,10 @@
 <ion-content [fullscreen]="true" class="ion-padding">
 
   <ion-text color="dark">
-    <h2>¡Bienvenido de nuevo!</h2>
+    <h2 @fadeInUp>¡Bienvenido de nuevo!</h2>
   </ion-text>
   
-  <ion-card (click)="goToNotes()">
+  <ion-card (click)="goToNotes()" @fadeInUp>
     <ion-card-header>
       <ion-card-title>Mis Notas</ion-card-title>
     </ion-card-header>
@@ -24,7 +24,7 @@
     </ion-card-content>
   </ion-card>
 
-    <ion-card>
+    <ion-card @fadeInUp>
     <ion-card-header>
       <ion-card-title>Calendario</ion-card-title>
     </ion-card-header>
@@ -33,7 +33,7 @@
     </ion-card-content>
   </ion-card>
 
-  <ion-list>
+  <ion-list @fadeInUp>
     <ion-list-header>
       Novedades
     </ion-list-header>
@@ -45,7 +45,7 @@
     </ion-item>
   </ion-list>
 
-  <ion-fab vertical="bottom" horizontal="end" slot="fixed">
+  <ion-fab vertical="bottom" horizontal="end" slot="fixed" @fadeInUp>
     <ion-fab-button color="secondary">
       <ion-icon name="add-outline"></ion-icon>
     </ion-fab-button>
