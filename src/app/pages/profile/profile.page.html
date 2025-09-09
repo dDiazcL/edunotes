@@ -1,13 +1,53 @@
-<ion-header [translucent]="true">
-  <ion-toolbar>
-    <ion-title>profile</ion-title>
+<ion-header>
+  <ion-toolbar color="primary">
+    <ion-title>Perfil</ion-title>
+    <ion-buttons slot="end">
+      <ion-button (click)="toggleEdit()">
+        <ion-icon [name]="isEditing ? 'close-outline' : 'create-outline'"></ion-icon>
+      </ion-button>
+    </ion-buttons>
   </ion-toolbar>
 </ion-header>
 
-<ion-content [fullscreen]="true">
-  <ion-header collapse="condense">
-    <ion-toolbar>
-      <ion-title size="large">profile</ion-title>
-    </ion-toolbar>
-  </ion-header>
+<ion-content class="ion-padding">
+
+  <div style="text-align:center; margin: 20px 0;">
+    <ion-avatar style="width: 120px; height: 120px; margin: auto;">
+      <img src="user.image">
+    </ion-avatar>
+
+    <div *ngIf="isEditing">
+      <input type="file" accept="image/*" (change)="onImageSelected($event)">
+    </div>
+  </div>
+
+  <ion-card>
+    <ion-card-content>
+      <ion-item *ngIf="isEditing; else showName">
+        <ion-input [(ngModel)]="user.name" placeholder="Nombre Completo"></ion-input>
+      </ion-item>
+      <ng-template #showName>
+        <h2> {{user.name}} </h2>
+      </ng-template>
+
+      <ion-item *ngIf="isEditing; else showEmail">
+        <ion-input [(ngModel)]="user.email" placeholder="Correo Electronico"></ion-input>
+      </ion-item>
+      <ng-template #showEmail>
+        <p>{{user.email}}</p>
+      </ng-template>
+
+      <ion-item *ngIf="isEditing; else showBio">
+        <ion-textarea [(ngModel)]="user.bio" placeholder="Escribe una breve biografia..."></ion-textarea>
+      </ion-item>
+      <ng-template #showBio>
+        <p>{{user.bio}}</p>
+      </ng-template>
+    </ion-card-content>
+  </ion-card>
+
+  <ion-button expand="block" color="success" *ngIf="isEditing" (click)="saveProfile()">
+    Guardar cambios
+  </ion-button>
+  
 </ion-content>
