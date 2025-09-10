@@ -9,9 +9,9 @@ import { Component, OnInit } from '@angular/core';
 export class ProfilePage implements OnInit {
 
   user = {
-    name: 'Eduardo Cortez',
-    email: 'eduardocortez@gmail.com',
-    bio: 'Estudiante de Ingieneria en Informatica',
+    name: '',
+    email: '',
+    bio: '',
     image: 'https://ionicframework.com/docs/img/demos/avatar.svg'
   };
 
@@ -20,6 +20,14 @@ export class ProfilePage implements OnInit {
   constructor() { }
 
   ngOnInit() {
+    this.loadProfile();
+  }
+
+  loadProfile() {
+    const savedUser = localStorage.getItem('userProfile');
+    if (savedUser) {
+      this.user = JSON.parse(savedUser);
+    }
   }
 
   toggleEdit() {
@@ -27,8 +35,20 @@ export class ProfilePage implements OnInit {
   }
 
   saveProfile() {
+    localStorage.setItem('userProfile',JSON.stringify(this.user));
     this.isEditing = false;
     alert('Perfil actualizado con exito 🚀');
+  }
+
+  deleteProfile() {
+    localStorage.removeItem('userProfile');
+    this.user = {
+      name: '',
+      email: '',
+      bio: '',
+      image: 'https://ionicframework.com/docs/img/demos/avatar.svg'
+    };
+    alert('Perfil Eliminado 🗑️')
   }
 
   onImageSelected(event: any) {

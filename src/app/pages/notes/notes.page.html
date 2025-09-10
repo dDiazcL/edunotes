@@ -5,18 +5,47 @@
 </ion-header>
 
 <ion-content class="ion-padding">
-  <ion-list>
-    <ion-item *ngFor="let note of notes">
-      <ion-label>
-        <h2>{{ note.title }}</h2>
-        <p>{{ note.content }}</p>
-      </ion-label>
-    </ion-item>
-  </ion-list>
 
-  <ion-fab vertical="bottom" horizontal="end" slot="fixed">
+  <div *ngIf="!isEditing">
+    <ion-card *ngFor="let note of notes">
+      <ion-card-header>
+        <ion-card-tittle>{{ note.title }}</ion-card-tittle>
+      </ion-card-header>
+      <ion-card-content>
+        <p>{{ note.content }}</p>
+      </ion-card-content>
+
+      <ion-row>
+        <ion-col>
+          <ion-button fill="clear" color="secondary" (click)="editNote(note)">
+            <ion-icon name="create-outline"></ion-icon> Editar
+          </ion-button>
+        </ion-col>
+        <ion-col>
+          <ion-button fill="clear" color="danger" (click)="deleteNote(note.id)">
+            <ion-icon name="trash-outline"></ion-icon> Eliminar
+          </ion-button>
+        </ion-col>
+      </ion-row>
+    </ion-card>
+  </div>
+
+  <div *ngIf="isEditing">
+    <ion-item>
+      <ion-input [(ngModel)]="selectedNote!.title" placeholder="Titulo"></ion-input>
+    </ion-item>
+    <ion-item>
+      <ion-textarea [(ngModel)]="selectedNote!.content" placeholder="Contenido"></ion-textarea>
+    </ion-item>
+
+    <ion-button expand="block" color="success" (click)="updateNote()">Guardar cambios</ion-button>
+    <ion-button expand="block" color="medium" (click)="cancelEdit()">Cancelar</ion-button>
+  </div>
+
+  <ion-fab vertical="bottom" horizontal="end" slot="fixed" *ngIf="!isEditing">
     <ion-fab-button (click)="addNote()">
       <ion-icon name="add-outline"></ion-icon>
     </ion-fab-button>
   </ion-fab>
+
 </ion-content>

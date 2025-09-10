@@ -27,27 +27,28 @@
         <ion-input [(ngModel)]="user.name" placeholder="Nombre Completo"></ion-input>
       </ion-item>
       <ng-template #showName>
-        <h2> {{user.name}} </h2>
+        <h2> {{user.name || 'Sin nombre'}} </h2>
       </ng-template>
 
       <ion-item *ngIf="isEditing; else showEmail">
         <ion-input [(ngModel)]="user.email" placeholder="Correo Electronico"></ion-input>
       </ion-item>
       <ng-template #showEmail>
-        <p>{{user.email}}</p>
+        <p>{{user.email || 'Sin correo'}}</p>
       </ng-template>
 
       <ion-item *ngIf="isEditing; else showBio">
         <ion-textarea [(ngModel)]="user.bio" placeholder="Escribe una breve biografia..."></ion-textarea>
       </ion-item>
       <ng-template #showBio>
-        <p>{{user.bio}}</p>
+        <p>{{user.bio || 'Sin biografia'}}</p>
       </ng-template>
     </ion-card-content>
   </ion-card>
 
-  <ion-button expand="block" color="success" *ngIf="isEditing" (click)="saveProfile()">
-    Guardar cambios
-  </ion-button>
-  
+  <div *ngIf="isEditing">
+    <ion-button expand="block" color="success" (click)="saveProfile()"> Guardar </ion-button>
+    <ion-button expand="block" color="danger" (click)="deleteProfile()"> Eliminar</ion-button>
+  </div>
+
 </ion-content>

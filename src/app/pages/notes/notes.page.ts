@@ -14,14 +14,25 @@ interface Note {
 })
 export class NotesPage implements OnInit {
 
-  notes: Note[] = [
-    {id: 1, title: 'Primera nota', content: 'Contenido de la primera nota.'},
-    {id: 2, title: 'Segunda nota', content: 'Contenido de la segunda nota.'}
-  ];
+  notes: Note[] = [];
+  isEditing = false;
+  selectedNote: Note | null = null;
 
   constructor() { }
 
   ngOnInit() {
+    this.loadNotes();
+  }
+
+  loadNotes() {
+    const savedNotes = localStorage.getItem('userNotes');
+    if (savedNotes) {
+      this.notes = JSON.parse(savedNotes);
+    }
+  }
+
+  saveNotes() {
+    localStorage.setItem('userNotes', JSON.stringify(this.notes));
   }
 
   addNote() {
@@ -31,6 +42,33 @@ export class NotesPage implements OnInit {
       content: 'Contenido vacio...'
     };
     this.notes.push(newNote);
+    this.saveNotes();
   }
 
+  editNote(note: Note) {
+    this.isEditing = true;
+    this.selectedNote = { ...note };
+  }
+
+  updateNote() {
+    if (this.selectedNote) {
+      const index = this.notes.findIndex(n => n.id === this.selectedNote!.id);
+      if (index > -1) {
+        this.notes[index] = this.selectedNote;
+        this.saveNotes();
+      }
+      this.isEditing = false;
+      this.selectedNote = null;
+    }
+  }
+
+  deleteNote(noteId: number) {
+    this.notes = this.notes.filter(n => n.id !== noteId);
+    this.saveNotes();
+  }
+
+  cancelEdit() {
+    this.isEditing = false;
+    this.selectedNote = null;
+  }
 }
