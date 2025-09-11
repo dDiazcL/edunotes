@@ -1,4 +1,5 @@
 import { Component, OnInit } from '@angular/core';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-profile',
@@ -17,7 +18,7 @@ export class ProfilePage implements OnInit {
 
   isEditing = false;
 
-  constructor() { }
+  constructor(private router: Router) { }
 
   ngOnInit() {
     this.loadProfile();
@@ -69,4 +70,8 @@ export class ProfilePage implements OnInit {
     alert('Foto de Perfil restablecida ✅');
   }
 
+  logout() {
+    localStorage.removeItem('userProfile');
+    this.router.navigate(['/login']);
+  }
 }
