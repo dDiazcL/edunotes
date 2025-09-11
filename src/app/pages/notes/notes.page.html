@@ -48,7 +48,7 @@
       <ion-input [(ngModel)]="selectedNote.title" placeholder="Título"></ion-input>
     </ion-item>
     <ion-item>
-      <ion-textarea [(ngModel)]="selectedNote.content" placeholder="Contenido"></ion-textarea>
+      <ion-textarea [(ngModel)]="selectedNote.content" placeholder="Contenido" auto-grow="true" rows="15"></ion-textarea>
     </ion-item>
     <ion-button expand="full" (click)="updateNote()">Guardar</ion-button>
     <ion-button expand="full" color="medium" (click)="cancelEdit()">Cancelar</ion-button>
