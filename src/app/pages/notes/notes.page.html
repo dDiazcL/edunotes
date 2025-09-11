@@ -1,51 +1,56 @@
 <ion-header>
-  <ion-toolbar color="primary">
+  <ion-toolbar>
     <ion-title>Notas</ion-title>
+    <ion-buttons slot="end">
+      <!-- Botón para agregar nueva nota -->
+      <ion-button (click)="addNote()">
+        <ion-icon slot="icon-only" name="add"></ion-icon>
+      </ion-button>
+
+      <!-- Botón para filtrar favoritas -->
+      <ion-button (click)="toggleFilterFavorites()">
+        <ion-icon 
+          slot="icon-only" 
+          [name]="filterFavorites ? 'star' : 'star-outline'">
+        </ion-icon>
+      </ion-button>
+    </ion-buttons>
   </ion-toolbar>
 </ion-header>
 
-<ion-content class="ion-padding">
-
-  <div *ngIf="!isEditing">
-    <ion-card *ngFor="let note of notes">
-      <ion-card-header>
-        <ion-card-title>{{ note.title }}</ion-card-title>
-      </ion-card-header>
-      <ion-card-content>
+<ion-content>
+  <ion-list>
+    <ion-item *ngFor="let note of filteredNotes">
+      
+      <!-- Título y contenido -->
+      <ion-label (click)="editNote(note)">
+        <h2>{{ note.title }}</h2>
         <p>{{ note.content }}</p>
-      </ion-card-content>
+      </ion-label>
 
-      <ion-row>
-        <ion-col>
-          <ion-button fill="clear" color="secondary" (click)="editNote(note)">
-            <ion-icon name="create-outline"></ion-icon> Editar
-          </ion-button>
-        </ion-col>
-        <ion-col>
-          <ion-button fill="clear" color="danger" (click)="deleteNote(note.id)">
-            <ion-icon name="trash-outline"></ion-icon> Eliminar
-          </ion-button>
-        </ion-col>
-      </ion-row>
-    </ion-card>
-  </div>
+      <!-- Botón favorito -->
+      <ion-button fill="clear" (click)="toggleFavorite(note)">
+        <ion-icon 
+          [name]="note.favorite ? 'star' : 'star-outline'">
+        </ion-icon>
+      </ion-button>
 
-  <div *ngIf="isEditing">
+      <!-- Botón eliminar -->
+      <ion-button fill="clear" color="danger" (click)="deleteNote(note.id)">
+        <ion-icon name="trash"></ion-icon>
+      </ion-button>
+    </ion-item>
+  </ion-list>
+
+  <!-- Formulario de edición -->
+  <div *ngIf="isEditing && selectedNote" class="edit-note">
     <ion-item>
-      <ion-input [(ngModel)]="selectedNote!.title" placeholder="Titulo"></ion-input>
+      <ion-input [(ngModel)]="selectedNote.title" placeholder="Título"></ion-input>
     </ion-item>
     <ion-item>
-      <ion-textarea [(ngModel)]="selectedNote!.content" placeholder="Contenido"></ion-textarea>
+      <ion-textarea [(ngModel)]="selectedNote.content" placeholder="Contenido"></ion-textarea>
     </ion-item>
-
-    <ion-button expand="block" color="success" (click)="updateNote()">Guardar cambios</ion-button>
-    <ion-button expand="block" color="medium" (click)="cancelEdit()">Cancelar</ion-button>
+    <ion-button expand="full" (click)="updateNote()">Guardar</ion-button>
+    <ion-button expand="full" color="medium" (click)="cancelEdit()">Cancelar</ion-button>
   </div>
-
-  <ion-fab vertical="bottom" horizontal="end" slot="fixed" *ngIf="!isEditing">
-    <ion-fab-button (click)="addNote()">
-      <ion-icon name="add-outline"></ion-icon>
-    </ion-fab-button>
-  </ion-fab>
-
 </ion-content>
