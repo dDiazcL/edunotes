@@ -31,9 +31,10 @@ export class LoginPage implements OnInit {
 
   ngOnInit() {}
 
-  login() {
+  goToHome() {
     console.log('EMAIL: ' + this.email);
     console.log('CONTRASEÑA: ' + this.password);
+    this.router.navigate(['/home']);
   }
 
   goToReset() {
