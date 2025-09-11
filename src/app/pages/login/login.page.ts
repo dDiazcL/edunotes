@@ -38,6 +38,10 @@ export class LoginPage {
 
     console.log('Usuario guardado en localStorage ✅:', user);
 
+    if (document.activeElement instanceof HTMLElement) {
+      document.activeElement.blur();
+    }
+
     // Navegar al Home
     this.router.navigate(['/home']);
   }
