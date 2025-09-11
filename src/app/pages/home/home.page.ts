@@ -29,6 +29,9 @@ export class HomePage implements OnInit{
   ngOnInit() {}
 
   goToProfile() {
+    if (document.activeElement instanceof HTMLElement) {
+      document.activeElement.blur();
+    }
     this.router.navigate(['/profile']);
   }
 
