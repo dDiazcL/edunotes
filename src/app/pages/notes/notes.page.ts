@@ -4,6 +4,7 @@ interface Note {
   id: number;
   title: string;
   content: string;
+  favorite: boolean;
 }
 
 @Component({
@@ -17,6 +18,7 @@ export class NotesPage implements OnInit {
   notes: Note[] = [];
   isEditing = false;
   selectedNote: Note | null = null;
+  filterFavorites = false;
 
   constructor() { }
 
@@ -39,7 +41,8 @@ export class NotesPage implements OnInit {
     const newNote: Note = {
       id: this.notes.length + 1,
       title: `Nueva nota ${this.notes.length + 1}`,
-      content: 'Contenido vacio...'
+      content: 'Contenido vacio...',
+      favorite: false
     };
     this.notes.push(newNote);
     this.saveNotes();
@@ -70,5 +73,21 @@ export class NotesPage implements OnInit {
   cancelEdit() {
     this.isEditing = false;
     this.selectedNote = null;
+  }
+
+  toggleFavorite(note: Note) {
+    note.favorite = !note.favorite;
+    this.saveNotes();
+  }
+
+  toggleFilterFavorites() {
+    this.filterFavorites = !this.filterFavorites;
+  }
+
+  get filteredNotes(): Note[] {
+    if (this.filterFavorites) {
+      return this.notes.filter(note => note.favorite);
+    }
+    return this.notes;
   }
 }
