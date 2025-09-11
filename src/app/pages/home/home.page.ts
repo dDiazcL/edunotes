@@ -85,4 +85,9 @@ export class HomePage implements OnInit{
   goToNotes() {
     this.router.navigate(['/notes']);
   }
+
+  logout() {
+    localStorage.removeItem('userProfile');
+    this.router.navigate(['/login']);
+  }
 }
