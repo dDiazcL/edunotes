@@ -57,9 +57,16 @@ export class ProfilePage implements OnInit {
       const reader = new FileReader();
       reader.onload = () => {
         this.user.image = reader.result as string;
+        localStorage.setItem('userProfile',JSON.stringify(this.user));
       }
       reader.readAsDataURL(file);
     }
+  }
+
+  resetImage() {
+    this.user.image = 'https://ionicframework.com/docs/img/demos/avatar.svg';
+    localStorage.setItem('userProfile',JSON.stringify(this.user));
+    alert('Foto de Perfil restablecida ✅');
   }
 
 }

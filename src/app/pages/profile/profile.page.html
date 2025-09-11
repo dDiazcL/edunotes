@@ -13,11 +13,14 @@
 
   <div style="text-align:center; margin: 20px 0;">
     <ion-avatar style="width: 120px; height: 120px; margin: auto;">
-      <img [src]="user.image || 'https://ionicframework.com/docs/img/demos/avatar.svg'" alt="Foto de perfil">
+      <img [src]="user.image" alt="Foto de perfil">
     </ion-avatar>
 
-    <div *ngIf="isEditing">
+    <div *ngIf="isEditing" style="margin-top: 10px;">
       <input type="file" accept="image/*" (change)="onImageSelected($event)">
+      <ion-button expand="block" fill="outline" color="medium" (click)="resetImage()">
+        Restablecer foto
+      </ion-button>
     </div>
   </div>
 
