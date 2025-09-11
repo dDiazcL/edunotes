@@ -47,6 +47,9 @@ export class LoginPage {
   }
 
   goToReset() {
+    if (document.activeElement instanceof HTMLElement) {
+      document.activeElement.blur();
+    }
     this.router.navigate(['/reset-password']);
   }
 }
