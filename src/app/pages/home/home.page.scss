@@ -38,3 +38,13 @@ ion-card {
 ion-card:hover {
   transform: scale(1.02);
 }
+
+ion-card-title {
+  font-weight: bold;
+  color: var(--ion-color-primary);
+}
+
+ion-item {
+  --padding-start: 10px;
+  --inner-padding-end: 5px;
+}

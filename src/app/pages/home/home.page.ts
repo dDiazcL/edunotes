@@ -8,6 +8,12 @@ import {
   animate
 } from '@angular/animations';
 
+interface FileData {
+  name: string;
+  type: string;
+  dataUrl: string;
+}
+
 @Component({
   selector: 'app-home',
   templateUrl: 'home.page.html',
@@ -24,9 +30,50 @@ import {
 })
 export class HomePage implements OnInit{
 
+  files: FileData[] = [];
+
   constructor(private router: Router) {}
 
-  ngOnInit() {}
+  ngOnInit() {
+    this.loadFiles();
+  }
+
+  loadFiles() {
+    const savedFiles = localStorage.getItem('userFiles');
+    if (savedFiles) {
+      this.files = JSON.parse(savedFiles);
+    }
+  }
+
+  saveFiles() {
+    localStorage.setItem('userFiles',JSON.stringify(this.files));
+  }
+
+  onFileSelected(event: any) {
+    const file = event.target.files[0];
+    if (file) {
+      const reader = new FileReader();
+      reader.onload = () => {
+        const fileData: FileData = {
+          name: file.name,
+          type: file.type,
+          dataUrl: reader.result as string
+        };
+        this.files.push(fileData);
+        this.saveFiles();
+      };
+      reader.readAsDataURL(file);
+    }
+  }
+
+  deleteFile(index: number) {
+    this.files.slice(index, 1);
+    this.saveFiles();
+  }
+
+  viewFile(file: FileData) {
+    window.open(file.dataUrl, '_blank');
+  }
 
   goToProfile() {
     if (document.activeElement instanceof HTMLElement) {
