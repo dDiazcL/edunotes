@@ -12,6 +12,7 @@ import {
   selector: 'app-login',
   templateUrl: './login.page.html',
   styleUrls: ['./login.page.scss'],
+  standalone: false,
   animations: [
     trigger('fadeInUp', [
       state('void', style({ opacity: 0, transform: 'translateY(20px)' })),
