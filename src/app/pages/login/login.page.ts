@@ -34,6 +34,7 @@ export class LoginPage implements OnInit {
       const user = {
         name: 'Usuario',
         email: this.email,
+        password: this.password,
         bio: 'Bienvenido a Edunotes 🚀',
         image: 'https://ionicframework.com/docs/img/demos/avatar.svg'
       };
