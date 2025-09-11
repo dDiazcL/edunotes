@@ -5,6 +5,11 @@
       <ion-button (click)="toggleEdit()">
         <ion-icon [name]="isEditing ? 'close-outline' : 'create-outline'"></ion-icon>
       </ion-button>
+    <ion-buttons>
+      <ion-button slot="start">
+        <ion-back-button defaultHref="/home"></ion-back-button>
+      </ion-button>
+    </ion-buttons>  
     </ion-buttons>
   </ion-toolbar>
 </ion-header>
