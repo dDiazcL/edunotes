@@ -1,42 +1,44 @@
-import { Component } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
-import { NavController } from '@ionic/angular';
+import {
+  trigger,
+  state,
+  style,
+  transition,
+  animate
+} from '@angular/animations';
 
 @Component({
   selector: 'app-login',
   templateUrl: './login.page.html',
   styleUrls: ['./login.page.scss'],
+  animations: [
+    trigger('fadeInUp', [
+      state('void', style({ opacity: 0, transform: 'translateY(20px)' })),
+      transition(':enter', [
+        animate('600ms ease-out')
+      ])
+    ])
+  ]
 })
-export class LoginPage {
+export class LoginPage implements OnInit {
+
   email: string = '';
   password: string = '';
 
-  constructor(private navCtrl: NavController, private router: Router) {}
+  constructor(private router: Router) {}
+
+  ngOnInit() {}
 
   login() {
-    if (this.email.trim() === '' || this.password.trim() === '') {
-      alert('Por favor completa todos los campos');
-      return;
-    }
-
-    // 🔹 Validación básica (aquí luego puedes conectar a backend)
-    if (this.email === 'test@mail.com' && this.password === '1234') {
-      const user = {
-        name: 'Usuario de Prueba',
-        email: this.email,
-        image: 'https://ionicframework.com/docs/img/demos/avatar.svg'
-      };
-
-      // Guardamos el usuario en localStorage
-      localStorage.setItem('userProfile', JSON.stringify(user));
-
-      // 🔹 Limpiamos el foco (evita warning de aria-hidden)
-      document.activeElement && (document.activeElement as HTMLElement).blur();
-
-      // 🔹 Navegación limpia (reemplaza la página de login por home)
-      this.navCtrl.navigateRoot('/home');
+    if (this.email && this.password) {
+      this.router.navigate(['/home']);
     } else {
-      alert('Credenciales incorrectas ❌');
+      alert('Debes ingresar usuario y contraseña');
     }
+  }
+
+  goToReset() {
+    this.router.navigate(['/reset-password']);
   }
 }
