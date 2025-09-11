@@ -87,6 +87,10 @@ export class HomePage implements OnInit{
   }
 
   logout() {
+    if (document.activeElement instanceof HTMLElement) {
+      document.activeElement.blur();
+    }
+
     localStorage.removeItem('userProfile');
     this.router.navigate(['/login']);
   }
