@@ -1,58 +1,42 @@
-import { Component, OnInit } from '@angular/core';
+import { Component } from '@angular/core';
+import { Router } from '@angular/router';
 import { NavController } from '@ionic/angular';
-import {
-  trigger,
-  state,
-  style,
-  transition,
-  animate
-} from '@angular/animations';
 
 @Component({
   selector: 'app-login',
   templateUrl: './login.page.html',
   styleUrls: ['./login.page.scss'],
-  standalone: false,
-  animations: [
-    trigger('fadeInUp',[
-      state('void', style({ opacity: 0,transform: 'translateY(20px)'})),
-      transition(':enter', [
-        animate('600ms ease-out')
-      ])
-    ])
-  ]
 })
-export class LoginPage implements OnInit {
-
+export class LoginPage {
   email: string = '';
   password: string = '';
 
-  constructor(private navCtrl: NavController) { }
+  constructor(private navCtrl: NavController, private router: Router) {}
 
   login() {
-    if (this.email && this.password) {
+    if (this.email.trim() === '' || this.password.trim() === '') {
+      alert('Por favor completa todos los campos');
+      return;
+    }
+
+    // 🔹 Validación básica (aquí luego puedes conectar a backend)
+    if (this.email === 'test@mail.com' && this.password === '1234') {
       const user = {
-        name: 'Usuario',
+        name: 'Usuario de Prueba',
         email: this.email,
-        password: this.password,
-        bio: 'Bienvenido a Edunotes 🚀',
         image: 'https://ionicframework.com/docs/img/demos/avatar.svg'
       };
 
-      localStorage.setItem('userProfile',JSON.stringify(user));
+      // Guardamos el usuario en localStorage
+      localStorage.setItem('userProfile', JSON.stringify(user));
 
+      // 🔹 Limpiamos el foco (evita warning de aria-hidden)
       document.activeElement && (document.activeElement as HTMLElement).blur();
+
+      // 🔹 Navegación limpia (reemplaza la página de login por home)
       this.navCtrl.navigateRoot('/home');
     } else {
-      alert('Debes ingresar usuario y contraseña');
+      alert('Credenciales incorrectas ❌');
     }
   }
-
-  goToReset() {
-    this.navCtrl.navigateRoot(['/reset-password']);
-  }
-
-  ngOnInit() {
-  }
-
 }
