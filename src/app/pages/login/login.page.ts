@@ -32,11 +32,8 @@ export class LoginPage implements OnInit {
   ngOnInit() {}
 
   login() {
-    if (this.email && this.password) {
-      this.router.navigate(['/home']);
-    } else {
-      alert('Debes ingresar usuario y contraseña');
-    }
+    console.log('EMAIL: ' + this.email);
+    console.log('CONTRASEÑA: ' + this.password);
   }
 
   goToReset() {
