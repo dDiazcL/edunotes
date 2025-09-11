@@ -1,5 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import { Router } from '@angular/router';
+import { NavController } from '@ionic/angular';
 import {
   trigger,
   state,
@@ -27,22 +27,28 @@ export class LoginPage implements OnInit {
   email: string = '';
   password: string = '';
 
-  constructor(private router: Router) { }
+  constructor(private navCtrl: NavController) { }
 
   login() {
     if (this.email && this.password) {
-      this.router.navigate(['home']);
+      const user = {
+        name: 'Usuario',
+        email: this.email,
+        bio: 'Bienvenido a Edunotes 🚀',
+        image: 'https://ionicframework.com/docs/img/demos/avatar.svg'
+      };
+
+      localStorage.setItem('userProfile',JSON.stringify(user));
+
+      document.activeElement && (document.activeElement as HTMLElement).blur();
+      this.navCtrl.navigateRoot('/home');
     } else {
       alert('Debes ingresar usuario y contraseña');
     }
   }
 
   goToReset() {
-    this.router.navigate(['/reset-password']);
-  }
-
-  goToHome() {
-    this.router.navigate(['/home']);
+    this.navCtrl.navigateRoot(['/reset-password']);
   }
 
   ngOnInit() {
