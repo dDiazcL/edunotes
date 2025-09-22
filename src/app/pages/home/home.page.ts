@@ -1,84 +1,25 @@
 import { Component, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
-import {
-  trigger,
-  state,
-  style,
-  transition,
-  animate
-} from '@angular/animations';
-
-interface FileData {
-  name: string;
-  type: string;
-  dataUrl: string;
-}
 
 @Component({
   selector: 'app-home',
-  templateUrl: 'home.page.html',
-  styleUrls: ['home.page.scss'],
-  standalone: false,
-  animations: [
-    trigger('fadeInUp',[
-      state('void',style({ opacity: 0, transform: 'translateY(20px)' })),
-      transition(':enter', [
-        animate('600ms ease-out')
-      ])
-    ])
-  ]
+  templateUrl: './home.page.html',
+  styleUrls: ['./home.page.scss'],
+  standalone: false
 })
-export class HomePage implements OnInit{
+export class HomePage implements OnInit {
 
-  files: FileData[] = [];
+  userEmail: string = '';
 
   constructor(private router: Router) {}
 
   ngOnInit() {
-    this.loadFiles();
-  }
-
-  loadFiles() {
-    const savedFiles = localStorage.getItem('userFiles');
-    if (savedFiles) {
-      this.files = JSON.parse(savedFiles);
-    }
-  }
-
-  saveFiles() {
-    localStorage.setItem('userFiles',JSON.stringify(this.files));
-  }
-
-  onFileSelected(event: any) {
-    const file = event.target.files[0];
-    if (file) {
-      const reader = new FileReader();
-      reader.onload = () => {
-        const fileData: FileData = {
-          name: file.name,
-          type: file.type,
-          dataUrl: reader.result as string
-        };
-        this.files.push(fileData);
-        this.saveFiles();
-      };
-      reader.readAsDataURL(file);
-    }
-  }
-
-  deleteFile(index: number) {
-    this.files.slice(index, 1);
-    this.saveFiles();
-  }
-
-  viewFile(file: FileData) {
-    window.open(file.dataUrl, '_blank');
+    const navigation = this.router.getCurrentNavigation();
+    const state = navigation?.extras?.state as { email: string };
+    this.userEmail = state?.email || 'Usuario';
   }
 
   goToProfile() {
-    if (document.activeElement instanceof HTMLElement) {
-      document.activeElement.blur();
-    }
     this.router.navigate(['/profile']);
   }
 
@@ -87,11 +28,6 @@ export class HomePage implements OnInit{
   }
 
   logout() {
-    if (document.activeElement instanceof HTMLElement) {
-      document.activeElement.blur();
-    }
-
-    localStorage.removeItem('userProfile');
     this.router.navigate(['/login']);
   }
 }

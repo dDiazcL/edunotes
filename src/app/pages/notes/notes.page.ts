@@ -1,4 +1,5 @@
-import { Component, OnInit } from '@angular/core';
+import { Component } from '@angular/core';
+import { Ui } from 'src/app/services/ui';
 
 interface Note {
   id: number;
@@ -11,83 +12,52 @@ interface Note {
   selector: 'app-notes',
   templateUrl: './notes.page.html',
   styleUrls: ['./notes.page.scss'],
-  standalone: false,
+  standalone: false
 })
-export class NotesPage implements OnInit {
+export class NotesPage {
+
+  constructor(private ui: Ui) {}
 
   notes: Note[] = [];
-  isEditing = false;
-  selectedNote: Note | null = null;
-  filterFavorites = false;
+  nextId = 1;
+  filter: 'all' | 'favorites' = 'all';
+  editingNote: Note | null = null;
 
-  constructor() { }
-
-  ngOnInit() {
-    this.loadNotes();
-  }
-
-  loadNotes() {
-    const savedNotes = localStorage.getItem('userNotes');
-    if (savedNotes) {
-      this.notes = JSON.parse(savedNotes);
-    }
-  }
-
-  saveNotes() {
-    localStorage.setItem('userNotes', JSON.stringify(this.notes));
+  get filteredNotes() {
+    return this.filter === 'all' ? this.notes : this.notes.filter(n => n.favorite);
   }
 
   addNote() {
-    const newNote: Note = {
-      id: this.notes.length + 1,
-      title: `Nueva nota ${this.notes.length + 1}`,
-      content: 'Contenido vacio...',
-      favorite: false
-    };
+
+    this.ui.blurActiveElement();
+
+    const newNote: Note = { id: this.nextId++, title: 'Nueva Nota', content: '', favorite: false };
     this.notes.push(newNote);
-    this.saveNotes();
-  }
-
-  editNote(note: Note) {
-    this.isEditing = true;
-    this.selectedNote = { ...note };
-  }
-
-  updateNote() {
-    if (this.selectedNote) {
-      const index = this.notes.findIndex(n => n.id === this.selectedNote!.id);
-      if (index > -1) {
-        this.notes[index] = this.selectedNote;
-        this.saveNotes();
-      }
-      this.isEditing = false;
-      this.selectedNote = null;
-    }
-  }
-
-  deleteNote(noteId: number) {
-    this.notes = this.notes.filter(n => n.id !== noteId);
-    this.saveNotes();
-  }
-
-  cancelEdit() {
-    this.isEditing = false;
-    this.selectedNote = null;
+    this.editingNote = newNote;
   }
 
   toggleFavorite(note: Note) {
     note.favorite = !note.favorite;
-    this.saveNotes();
   }
 
-  toggleFilterFavorites() {
-    this.filterFavorites = !this.filterFavorites;
+  editNote(note: Note) {
+    this.editingNote = { ...note };
   }
 
-  get filteredNotes(): Note[] {
-    if (this.filterFavorites) {
-      return this.notes.filter(note => note.favorite);
+  updateNote() {
+    if (!this.editingNote) return;
+    const index = this.notes.findIndex(n => n.id === this.editingNote!.id);
+    if (index !== -1) {
+      this.notes[index] = { ...this.editingNote };
     }
-    return this.notes;
+    this.editingNote = null;
+  }
+
+  deleteNote(id: number) {
+    this.notes = this.notes.filter(n => n.id !== id);
+  }
+
+  cancelEdit() {
+    this.editingNote = null;
   }
 }

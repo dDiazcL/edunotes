@@ -1,69 +1,26 @@
-<ion-header [translucent]="true">
+<ion-header>
   <ion-toolbar color="primary">
     <ion-title>Inicio</ion-title>
     <ion-buttons slot="end">
-      <ion-button (click)="goToProfile()">
-        <ion-icon name="person-circle-outline"></ion-icon>
-      </ion-button>
       <ion-button (click)="logout()">
-        <ion-icon name="log-out-outline"></ion-icon>
+        <ion-icon slot="icon-only" name="log-out-outline"></ion-icon>
       </ion-button>
     </ion-buttons>
   </ion-toolbar>
 </ion-header>
 
-<ion-content [fullscreen]="true" class="ion-padding">
+<ion-content class="ion-padding">
+  <h2>Bienvenido, {{ userEmail }}</h2>
 
-  <ion-text color="dark">
-    <h2 @fadeInUp>¡Bienvenido de nuevo!</h2>
-  </ion-text>
-  <!-- Sección Notas -->
-  <ion-card (click)="goToNotes()" @fadeInUp>
+  <ion-card (click)="goToNotes()">
     <ion-card-header>
-      <ion-card-title>Mis Notas</ion-card-title>
+      <ion-card-title>Notas</ion-card-title>
     </ion-card-header>
-    <ion-card-content>
-      Accede rapidamente a tus apuntes y tareas pendientes.
-    </ion-card-content>
-  </ion-card>
-    <!-- Sección Archivos -->
-    <ion-card @fadeInUp>
-    <ion-card-header>
-      <ion-card-title>Mis Archivos</ion-card-title>
-    </ion-card-header>
-    <ion-card-content>
-      <input type="file" (change)="onFileSelected($event)">
-
-      <ion-list *ngIf="files.length > 0; else noFiles">
-        <ion-item *ngFor="let file of files; let i = index">
-          <ion-label>
-            <h2>{{ file.name }}</h2>
-            <p>{{ file.type }}</p>
-          </ion-label>
-          <ion-button fill="clear" (click)="viewFile(file)">
-            <ion-icon name="eye-outline"></ion-icon>
-          </ion-button>
-          <ion-button color="danger" fill="clear" (click)="deleteFile(i)">
-            <ion-icon name="trash-outline"></ion-icon>
-          </ion-button>
-        </ion-item>
-      </ion-list>
-
-      <ng-template #noFiles>
-        <p style="text-align: center; margin-top: 10px;">No hay archivos almacenados</p>
-      </ng-template>
-    </ion-card-content>
   </ion-card>
 
-  <ion-list @fadeInUp>
-    <ion-list-header>
-      Novedades
-    </ion-list-header>
-    <ion-item>
-      Se ha agregado la funcion de exportar PDF.
-    </ion-item>
-    <ion-item>
-      Pronto se agregaran funciones correspondientes a la edicion de las Notas.
-    </ion-item>
-  </ion-list>
+  <ion-card (click)="goToProfile()">
+    <ion-card-header>
+      <ion-card-title>Perfil</ion-card-title>
+    </ion-card-header>
+  </ion-card>
 </ion-content>

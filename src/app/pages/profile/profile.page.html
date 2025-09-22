@@ -5,72 +5,38 @@
       <ion-button (click)="toggleEdit()">
         <ion-icon [name]="isEditing ? 'close-outline' : 'create-outline'"></ion-icon>
       </ion-button>
-    <ion-buttons>
-      <ion-button slot="start">
-        <ion-back-button defaultHref="/home"></ion-back-button>
-      </ion-button>
-    </ion-buttons>  
     </ion-buttons>
   </ion-toolbar>
 </ion-header>
 
 <ion-content class="ion-padding">
-  <!-- Avatar + Nombre -->
-  <div class="profile-header">
-    <ion-avatar class="profile-avatar">
-      <img [src]="user.image" alt="Foto de perfil">
-    </ion-avatar>
-
-    <h2>{{ user.name || 'Sin nombre' }}</h2>
-    <p>{{ user.email || 'Sin correo' }}</p>
-
-    <div *ngIf="isEditing" class="image-upload">
-      <input type="file" accept="image/*" (change)="onImageSelected($event)">
-      <ion-button expand="block" fill="outline" color="medium" (click)="resetImage()">
-        Restablecer foto
-      </ion-button>
-    </div>
-  </div>
-
-  <!-- Información del perfil -->
   <ion-card>
-    <ion-card-header>
-      <ion-card-title>Información</ion-card-title>
-    </ion-card-header>
     <ion-card-content>
-      <!-- Nombre -->
       <ion-item *ngIf="isEditing; else showName">
-        <ion-label position="floating">Nombre Completo</ion-label>
-        <ion-input [(ngModel)]="user.name"></ion-input>
+        <ion-input [(ngModel)]="user.name" placeholder="Nombre"></ion-input>
       </ion-item>
       <ng-template #showName>
-        <p><strong>Nombre:</strong> {{ user.name || 'Sin nombre' }}</p>
+        <h2>{{ user.name || 'Sin nombre' }}</h2>
       </ng-template>
 
-      <!-- Correo -->
       <ion-item *ngIf="isEditing; else showEmail">
-        <ion-label position="floating">Correo Electronico</ion-label>
-        <ion-input [(ngModel)]="user.email"></ion-input>
+        <ion-input [(ngModel)]="user.email" placeholder="Correo"></ion-input>
       </ion-item>
       <ng-template #showEmail>
-        <p><strong>Correo:</strong> {{user.email || 'Sin correo'}} </p>
+        <p>{{ user.email || 'Sin correo' }}</p>
       </ng-template>
 
-      <!-- Biografia -->
       <ion-item *ngIf="isEditing; else showBio">
-        <ion-label position="floating">Biografia</ion-label>
-        <ion-textarea [(ngModel)]="user.bio"></ion-textarea>
+        <ion-textarea [(ngModel)]="user.bio" placeholder="Biografía"></ion-textarea>
       </ion-item>
       <ng-template #showBio>
-        <p><strong>Bio:</strong> {{user.bio || 'Sin biografia'}} </p>
+        <p>{{ user.bio || 'Sin biografía' }}</p>
       </ng-template>
     </ion-card-content>
   </ion-card>
 
-  <!-- Botones de accion -->
-  <div *ngIf="isEditing" class="action-buttons">
-    <ion-button expand="block" color="success" (click)="saveProfile()"> Guardar </ion-button>
-    <ion-button expand="block" color="danger" (click)="deleteProfile()"> Eliminar</ion-button>
+  <div *ngIf="isEditing">
+    <ion-button expand="block" (click)="saveProfile()">Guardar</ion-button>
+    <ion-button expand="block" color="danger" (click)="deleteProfile()">Eliminar</ion-button>
   </div>
-
 </ion-content>
