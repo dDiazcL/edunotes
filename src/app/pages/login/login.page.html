@@ -5,13 +5,15 @@
 </ion-header>
 
 <ion-content class="ion-padding">
-  <ion-item>
-    <ion-input [(ngModel)]="email" type="email" placeholder="Correo electrónico"></ion-input>
-  </ion-item>
+  <form (ngSubmit)="login()">
+    <ion-item>
+      <ion-input [(ngModel)]="email" type="email" placeholder="Correo electrónico" name="email"></ion-input>
+    </ion-item>
 
-  <ion-item>
-    <ion-input [(ngModel)]="password" type="password" placeholder="Contraseña"></ion-input>
-  </ion-item>
+    <ion-item>
+      <ion-input [(ngModel)]="password" type="password" placeholder="Contraseña" name="password"></ion-input>
+    </ion-item>
+  </form>
 
   <ion-button expand="block" (click)="login()">Ingresar</ion-button>
   <ion-button fill="clear" (click)="goToReset()">¿Olvidaste tu contraseña?</ion-button>

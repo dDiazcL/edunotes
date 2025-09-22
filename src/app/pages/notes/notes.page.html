@@ -49,13 +49,13 @@
         </ion-toolbar>
       </ion-header>
       <ion-content class="ion-padding">
-        <ion-item>
-          <ion-input [(ngModel)]="editingNote!.title"></ion-input>
+        <ion-item *ngIf="editingNote">
+          <ion-input [(ngModel)]="editingNote.title" placeholder="Título"></ion-input>
         </ion-item>
-        <ion-item>
-          <ion-textarea [(ngModel)]="editingNote!.content"></ion-textarea>
+        <ion-item *ngIf="editingNote">
+          <ion-textarea [(ngModel)]="editingNote.content" placeholder="Contenido"></ion-textarea>
         </ion-item>
-        <ion-button expand="block" (click)="updateNote()">Guardar</ion-button>
+        <ion-button expand="block" color="success" (click)="updateNote()">Guardar</ion-button>
       </ion-content>
     </ng-template>
   </ion-modal>
