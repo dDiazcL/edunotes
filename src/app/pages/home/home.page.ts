@@ -9,14 +9,18 @@ import { Router } from '@angular/router';
 })
 export class HomePage implements OnInit {
 
-  userEmail: string = '';
+  email: string = '';
+  password: string = '';
 
   constructor(private router: Router) {}
 
   ngOnInit() {
-    const navigation = this.router.getCurrentNavigation();
-    const state = navigation?.extras?.state as { email: string };
-    this.userEmail = state?.email || 'Usuario';
+    let extras = this.router.getCurrentNavigation();
+
+    if (extras?.extras.state) {
+      this.email = extras?.extras.state['email'];
+      this.password = extras?.extras.state['password'];
+    }
   }
 
   goToProfile() {
