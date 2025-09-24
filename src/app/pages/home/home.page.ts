@@ -1,5 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
+import { Ui } from 'src/app/services/ui';
 
 @Component({
   selector: 'app-home',
@@ -12,7 +13,7 @@ export class HomePage implements OnInit {
   email: string = '';
   password: string = '';
 
-  constructor(private router: Router) {}
+  constructor(private router: Router, private ui: Ui) {}
 
   ngOnInit() {
     let extras = this.router.getCurrentNavigation();
@@ -24,14 +25,17 @@ export class HomePage implements OnInit {
   }
 
   goToProfile() {
+    this.ui.blurActiveElement();
     this.router.navigate(['/profile']);
   }
 
   goToNotes() {
+    this.ui.blurActiveElement();
     this.router.navigate(['/notes']);
   }
 
   logout() {
+    this.ui.blurActiveElement();
     this.router.navigate(['/login']);
   }
 }

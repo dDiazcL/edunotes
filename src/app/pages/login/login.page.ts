@@ -1,5 +1,6 @@
 import { Component } from '@angular/core';
 import { Router, NavigationExtras } from '@angular/router';
+import { Ui } from 'src/app/services/ui';
 
 @Component({
   selector: 'app-login',
@@ -12,7 +13,7 @@ export class LoginPage {
   email: string = '';
   password: string = '';
 
-  constructor(private router: Router) {}
+  constructor(private router: Router, private ui: Ui) {}
 
   login() {
     if (!this.email || !this.password) {
@@ -31,6 +32,7 @@ export class LoginPage {
   }
 
   goToReset() {
+    this.ui.blurActiveElement();
     this.router.navigate(['/reset-password']);
   }
 }
