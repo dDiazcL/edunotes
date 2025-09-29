@@ -9,27 +9,28 @@
   </ion-toolbar>
 </ion-header>
 
-<ion-content class="ion-padding">
+<ion-content>
   <ion-list *ngIf="filteredNotes.length > 0; else emptyNotes">
-    <ion-item *ngFor="let note of filteredNotes">
+    <ion-item *ngFor="let note of filteredNotes" (click)="editNote(note)">
       <ion-label>
         <h2>{{ note.title }}</h2>
         <p>{{ note.content }}</p>
       </ion-label>
-      <ion-button fill="clear" (click)="toggleFavorite(note)">
+
+      <ion-button fill="clear" color="warning" (click)="toggleFavorite(note); $event.stopPropagation()">
         <ion-icon [name]="note.favorite ? 'star' : 'star-outline'"></ion-icon>
       </ion-button>
-      <ion-button fill="clear" (click)="editNote(note)">
-        <ion-icon name="create-outline"></ion-icon>
-      </ion-button>
-      <ion-button fill="clear" (click)="deleteNote(note.id)">
+
+      <ion-button fill="clear" color="danger" (click)="deleteNote(note.id); $event.stopPropagation()">
         <ion-icon name="trash-outline"></ion-icon>
       </ion-button>
     </ion-item>
   </ion-list>
 
   <ng-template #emptyNotes>
-    <p class="ion-text-center">No tienes notas aún</p>
+    <ion-text color="medium">
+      <p class="ion-text-center">No tienes notas aun 📝</p>
+    </ion-text>
   </ng-template>
 
   <ion-fab vertical="bottom" horizontal="end" slot="fixed">
@@ -41,21 +42,27 @@
   <ion-modal [isOpen]="editingNote !== null" (didDismiss)="cancelEdit()">
     <ng-template>
       <ion-header>
-        <ion-toolbar>
+        <ion-toolbar color="light">
+          <ion-buttons slot="start">
+            <ion-button (click)="cancelEdit()">Cerrar</ion-button>
+          </ion-buttons>
           <ion-title>Editar Nota</ion-title>
           <ion-buttons slot="end">
-            <ion-button (click)="cancelEdit()">Cerrar</ion-button>
+            <ion-button color="primary" (click)="updateNote()">Guardar</ion-button>
           </ion-buttons>
         </ion-toolbar>
       </ion-header>
-      <ion-content class="ion-padding">
-        <ion-item *ngIf="editingNote">
-          <ion-input [(ngModel)]="editingNote.title" placeholder="Título"></ion-input>
+
+      <ion-content>
+        <ion-item lines="none" *ngIf="editingNote">
+          <ion-input [(ngModel)]="editingNote.title" placeholder="Nueva Nota" style="font-weight: bold;
+          font-size: 1.2em;"></ion-input>
         </ion-item>
-        <ion-item *ngIf="editingNote">
-          <ion-textarea [(ngModel)]="editingNote.content" placeholder="Contenido"></ion-textarea>
+
+        <ion-item lines="none" *ngIf="editingNote">
+          <ion-textarea [(ngModel)]="editingNote!.content" placeholder="Contenido" autoGrow="true" style="font-size: 1em;">
+          </ion-textarea>
         </ion-item>
-        <ion-button expand="block" color="success" (click)="updateNote()">Guardar</ion-button>
       </ion-content>
     </ng-template>
   </ion-modal>

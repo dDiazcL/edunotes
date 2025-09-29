@@ -33,7 +33,7 @@ export class NotesPage {
 
     const newNote: Note = { id: this.nextId++, title: 'Nueva Nota', content: '', favorite: false };
     this.notes.push(newNote);
-    this.editingNote = newNote;
+    this.editingNote = { ...newNote };
   }
 
   toggleFavorite(note: Note) {
@@ -55,6 +55,9 @@ export class NotesPage {
 
   deleteNote(id: number) {
     this.notes = this.notes.filter(n => n.id !== id);
+    if (this.editingNote && this.editingNote.id === id) {
+      this.cancelEdit();
+    }
   }
 
   cancelEdit() {
