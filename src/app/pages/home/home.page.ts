@@ -1,6 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
 import { Ui } from 'src/app/services/ui';
+import { Auth } from 'src/app/services/auth';
 
 @Component({
   selector: 'app-home',
@@ -11,16 +12,19 @@ import { Ui } from 'src/app/services/ui';
 export class HomePage implements OnInit {
 
   email: string = '';
-  password: string = '';
 
-  constructor(private router: Router, private ui: Ui) {}
+  constructor(private auth: Auth,private router: Router, private ui: Ui) {}
 
   ngOnInit() {
-    let extras = this.router.getCurrentNavigation();
+    const extras = this.router.getCurrentNavigation();
 
-    if (extras?.extras.state) {
-      this.email = extras?.extras.state['email'];
-      this.password = extras?.extras.state['password'];
+    if (extras?.extras?.state?.['email']) {
+      this.email = extras.extras.state['email'];
+    } else {
+      const user = this.auth.getUSer();
+      if (user) {
+        this.email = user.email;
+      }
     }
   }
 
@@ -36,6 +40,7 @@ export class HomePage implements OnInit {
 
   logout() {
     this.ui.blurActiveElement();
+    this.auth.logout();
     this.router.navigate(['/login']);
   }
 }

@@ -2,6 +2,7 @@ import { Component } from '@angular/core';
 import { Router, NavigationExtras } from '@angular/router';
 import { ToastController } from '@ionic/angular';
 import { Ui } from 'src/app/services/ui';
+import { Auth } from 'src/app/services/auth';
 
 @Component({
   selector: 'app-login',
@@ -14,7 +15,7 @@ export class LoginPage {
   email: string = '';
   password: string = '';
 
-  constructor(private router: Router, private ui: Ui, private toastController: ToastController) {}
+  constructor(private router: Router, private ui: Ui, private toastController: ToastController, private auth: Auth) {}
 
   async presentToast(message: string, color: string = 'danger') {
     const toast = await this.toastController.create({
@@ -33,16 +34,18 @@ export class LoginPage {
     }
 
     const emailVal = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+    const passwordVal = /^(?=.*[A-Za-z])(?=.*\d)[A-Za-z\d]{6,}$/;
     if (!emailVal.test(this.email)){
       this.presentToast('Correo inválido 📧');
       return;
     }
 
-    const passwordVal = /^(?=.*[A-Za-z])(?=.*\d)[A-Za-z\d]{6,}$/;
     if (!passwordVal.test(this.password)) {
       this.presentToast('La contraseña debe tener al menos 6 caracteres e incluir letras y numeros 🔑');
       return;
     }
+
+    this.auth.login(this.email, this.password);
 
     let extras: NavigationExtras = {
       replaceUrl: true,
