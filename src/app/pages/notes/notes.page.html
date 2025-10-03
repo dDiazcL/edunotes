@@ -2,6 +2,7 @@
   <ion-toolbar color="primary">
     <ion-title>Notas</ion-title>
     <ion-buttons slot="end">
+      <!-- Botón para filtrar notas favoritas -->
       <ion-button (click)="filter = (filter === 'all' ? 'favorites' : 'all')">
         <ion-icon [name]="filter === 'all' ? 'star-outline' : 'star'"></ion-icon>
       </ion-button>
@@ -10,6 +11,7 @@
 </ion-header>
 
 <ion-content>
+  <!-- Lista de notas -->
   <ion-list *ngIf="filteredNotes.length > 0; else emptyNotes">
     <ion-item *ngFor="let note of filteredNotes" (click)="editNote(note)">
       <ion-label>
@@ -17,28 +19,33 @@
         <p>{{ note.content }}</p>
       </ion-label>
 
+      <!-- Botón favorito -->
       <ion-button fill="clear" color="warning" (click)="toggleFavorite(note); $event.stopPropagation()">
         <ion-icon [name]="note.favorite ? 'star' : 'star-outline'"></ion-icon>
       </ion-button>
 
+      <!-- Botón eliminar -->
       <ion-button fill="clear" color="danger" (click)="deleteNote(note.id); $event.stopPropagation()">
         <ion-icon name="trash-outline"></ion-icon>
       </ion-button>
     </ion-item>
   </ion-list>
 
+  <!-- Mensaje si no hay notas -->
   <ng-template #emptyNotes>
     <ion-text color="medium">
-      <p class="ion-text-center">No tienes notas aun 📝</p>
+      <p class="ion-text-center">No tienes notas aún 📝</p>
     </ion-text>
   </ng-template>
 
+  <!-- Botón flotante para crear nota -->
   <ion-fab vertical="bottom" horizontal="end" slot="fixed">
     <ion-fab-button (click)="addNote()">
       <ion-icon name="add-outline"></ion-icon>
     </ion-fab-button>
   </ion-fab>
 
+  <!-- Modal de edición -->
   <ion-modal [isOpen]="editingNote !== null" (didDismiss)="cancelEdit()">
     <ng-template>
       <ion-header>
@@ -53,15 +60,13 @@
         </ion-toolbar>
       </ion-header>
 
-      <ion-content>
+      <ion-content class="ion-padding">
         <ion-item lines="none" *ngIf="editingNote">
-          <ion-input [(ngModel)]="editingNote.title" placeholder="Nueva Nota" style="font-weight: bold;
-          font-size: 1.2em;"></ion-input>
+          <ion-input [(ngModel)]="editingNote.title" placeholder="Nueva Nota" style="font-weight: bold; font-size: 1.2em;"></ion-input>
         </ion-item>
 
         <ion-item lines="none" *ngIf="editingNote">
-          <ion-textarea [(ngModel)]="editingNote!.content" placeholder="Contenido" autoGrow="true" style="font-size: 1em;">
-          </ion-textarea>
+          <ion-textarea [(ngModel)]="editingNote.content" placeholder="Contenido" autoGrow="true" style="font-size: 1em;"></ion-textarea>
         </ion-item>
       </ion-content>
     </ng-template>

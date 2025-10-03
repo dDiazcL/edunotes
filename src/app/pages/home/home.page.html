@@ -2,6 +2,7 @@
   <ion-toolbar color="primary">
     <ion-title>Inicio</ion-title>
     <ion-buttons slot="end">
+      <!-- Botón Logout -->
       <ion-button (click)="logout()">
         <ion-icon slot="icon-only" name="log-out-outline"></ion-icon>
       </ion-button>
@@ -12,15 +13,9 @@
 <ion-content class="ion-padding">
   <h2>Bienvenido, {{ email }}</h2>
 
-  <ion-card (click)="goToNotes()">
-    <ion-card-header>
-      <ion-card-title>Notas</ion-card-title>
-    </ion-card-header>
-  </ion-card>
-
-  <ion-card (click)="goToProfile()">
-    <ion-card-header>
-      <ion-card-title>Perfil</ion-card-title>
-    </ion-card-header>
-  </ion-card>
+  <ion-text color="medium">
+    <p class="ion-margin-top">
+      Usa la barra de pestañas inferior para acceder rápidamente a tus Notas 📒 y Perfil 👤
+    </p>
+  </ion-text>
 </ion-content>

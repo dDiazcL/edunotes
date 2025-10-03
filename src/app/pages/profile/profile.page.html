@@ -2,6 +2,7 @@
   <ion-toolbar color="primary">
     <ion-title>Perfil</ion-title>
     <ion-buttons slot="end">
+      <!-- Botón para activar/desactivar edición -->
       <ion-button (click)="toggleEdit()">
         <ion-icon [name]="isEditing ? 'close-outline' : 'create-outline'"></ion-icon>
       </ion-button>
@@ -10,33 +11,38 @@
 </ion-header>
 
 <ion-content class="ion-padding">
+  <!-- Tarjeta del perfil -->
   <ion-card>
     <ion-card-content>
+      <!-- Nombre -->
       <ion-item *ngIf="isEditing; else showName">
-        <ion-input [(ngModel)]="user.name" placeholder="Nombre"></ion-input>
+        <ion-input [(ngModel)]="user.name" placeholder="Nombre completo"></ion-input>
       </ion-item>
       <ng-template #showName>
-        <h2>{{ user.name || 'Sin nombre' }}</h2>
+        <h2 class="ion-text-center">{{ user.name || 'Sin nombre' }}</h2>
       </ng-template>
 
+      <!-- Correo -->
       <ion-item *ngIf="isEditing; else showEmail">
-        <ion-input [(ngModel)]="user.email" placeholder="Correo"></ion-input>
+        <ion-input [(ngModel)]="user.email" placeholder="Correo electrónico"></ion-input>
       </ion-item>
       <ng-template #showEmail>
-        <p>{{ user.email || 'Sin correo' }}</p>
+        <p class="ion-text-center">{{ user.email || 'Sin correo' }}</p>
       </ng-template>
 
+      <!-- Biografía -->
       <ion-item *ngIf="isEditing; else showBio">
         <ion-textarea [(ngModel)]="user.bio" placeholder="Biografía"></ion-textarea>
       </ion-item>
       <ng-template #showBio>
-        <p>{{ user.bio || 'Sin biografía' }}</p>
+        <p class="ion-text-center">{{ user.bio || 'Sin biografía' }}</p>
       </ng-template>
     </ion-card-content>
   </ion-card>
 
+  <!-- Botones solo visibles en edición -->
   <div *ngIf="isEditing">
-    <ion-button expand="block" (click)="saveProfile()">Guardar</ion-button>
+    <ion-button expand="block" color="success" (click)="saveProfile()">Guardar</ion-button>
     <ion-button expand="block" color="danger" (click)="deleteProfile()">Eliminar</ion-button>
   </div>
 </ion-content>

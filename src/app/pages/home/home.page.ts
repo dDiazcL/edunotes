@@ -30,12 +30,12 @@ export class HomePage implements OnInit {
 
   goToProfile() {
     this.ui.blurActiveElement();
-    this.router.navigate(['/profile']);
+    this.router.navigate(['/tabs/profile']);
   }
 
   goToNotes() {
     this.ui.blurActiveElement();
-    this.router.navigate(['/notes']);
+    this.router.navigate(['/tabs/notes']);
   }
 
   logout() {
