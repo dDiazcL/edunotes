@@ -31,7 +31,12 @@ const routes: Routes = [
     loadChildren: () => import('./pages/notes/notes.module').then( m => m.NotesPageModule),
     canActivate: [authGuard]
   },
-  
+  {
+    path: 'tabs',
+    loadChildren: () => import('./pages/tabs/tabs.module').then( m => m.TabsPageModule),
+    canActivate: [authGuard]
+  },
+
 ];
 
 @NgModule({

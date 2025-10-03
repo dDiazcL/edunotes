@@ -56,7 +56,7 @@ export class LoginPage {
     };
 
     this.ui.blurActiveElement();
-    this.router.navigate(['/home'], extras);
+    this.router.navigate(['/tabs/home'], extras);
   }
 
   goToReset() {
