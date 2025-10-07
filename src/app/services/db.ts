@@ -24,7 +24,8 @@ export class Db {
   private listaNotas = new BehaviorSubject<Note[]>([]);
   private isDbReady: BehaviorSubject<boolean> = new BehaviorSubject(false);
 
-  constructor(private sqlite: SQLite, private platform: Platform, private toastController: ToastController) {}
+  constructor(private sqlite: SQLite, private platform: Platform, private toastController: ToastController) 
+  {this.init();}
 
   private async init() {
     await this.platform.ready();
@@ -92,8 +93,8 @@ export class Db {
     try {
       await this.database.executeSql(sql, [id]);
       await this.loadNotes();
-    } catch {console.error('deleteNote error');
-    } {
+    } catch (err: any){
+      console.error('deleteNote error', err);
     }
   }
 
