@@ -1,20 +1,26 @@
 <ion-header>
   <ion-toolbar color="danger">
-    <ion-title>Página no encontrada</ion-title>
+    <oin-title>Página no encontrada</oin-title>
   </ion-toolbar>
 </ion-header>
 
 <ion-content class="ion-padding ion-text-center">
 
-  <ion-icon name="alert-circle-outline" size="large" color="warning"></ion-icon>
-  <h2>404 - Página no encontrada</h2>
-  <p>La ruta que intentas acceder no existe o fue movida.</p>
+  <div class="icon-container">
+    <ion-icon name="alert-circle-outline" color="warning"></ion-icon>
+  </div>
+
+  <h2 class="title">Oops! Página no encontrada 😥</h2>
+  <p class="message">
+    La pagina que buscas no existe o fue movida.
+  </p>
 
   <ion-button expand="block" color="primary" (click)="goHome()">
     Ir al Inicio
   </ion-button>
 
-  <ion-button expand="block" fill="clear" color="medium" (click)="goLogin()">
+  <ion-button expand="block" fill="outline" color="medium" (click)="goLogin()">
     Volver al Login
   </ion-button>
+
 </ion-content>
