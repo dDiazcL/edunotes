@@ -1,8 +1,7 @@
 <ion-header>
   <ion-toolbar color="primary">
-    <ion-title>Notas</ion-title>
+    <ion-title>Mis Notas</ion-title>
     <ion-buttons slot="end">
-      <!-- Botón para filtrar notas favoritas -->
       <ion-button (click)="filter = (filter === 'all' ? 'favorites' : 'all')">
         <ion-icon [name]="filter === 'all' ? 'star-outline' : 'star'"></ion-icon>
       </ion-button>
@@ -10,7 +9,7 @@
   </ion-toolbar>
 </ion-header>
 
-<ion-content>
+<ion-content class="ion-padding">
   <!-- Lista de notas -->
   <ion-list *ngIf="filteredNotes.length > 0; else emptyNotes">
     <ion-item *ngFor="let note of filteredNotes" (click)="editNote(note)">
@@ -19,33 +18,31 @@
         <p>{{ note.content }}</p>
       </ion-label>
 
-      <!-- Botón favorito -->
       <ion-button fill="clear" color="warning" (click)="toggleFavorite(note); $event.stopPropagation()">
         <ion-icon [name]="note.favorite ? 'star' : 'star-outline'"></ion-icon>
       </ion-button>
 
-      <!-- Botón eliminar -->
       <ion-button fill="clear" color="danger" (click)="deleteNote(note.id); $event.stopPropagation()">
         <ion-icon name="trash-outline"></ion-icon>
       </ion-button>
     </ion-item>
   </ion-list>
 
-  <!-- Mensaje si no hay notas -->
+  <!-- Cuando no hay notas -->
   <ng-template #emptyNotes>
     <ion-text color="medium">
       <p class="ion-text-center">No tienes notas aún 📝</p>
     </ion-text>
   </ng-template>
 
-  <!-- Botón flotante para crear nota -->
+  <!-- Botón flotante -->
   <ion-fab vertical="bottom" horizontal="end" slot="fixed">
     <ion-fab-button (click)="addNote()">
       <ion-icon name="add-outline"></ion-icon>
     </ion-fab-button>
   </ion-fab>
 
-  <!-- Modal de edición -->
+  <!-- Modal para editar o agregar nota -->
   <ion-modal [isOpen]="editingNote !== null" (didDismiss)="cancelEdit()">
     <ng-template>
       <ion-header>
@@ -53,20 +50,24 @@
           <ion-buttons slot="start">
             <ion-button (click)="cancelEdit()">Cerrar</ion-button>
           </ion-buttons>
-          <ion-title>Editar Nota</ion-title>
+          <ion-title>{{ editingNote?.id ? 'Editar Nota' : 'Nueva Nota' }}</ion-title>
           <ion-buttons slot="end">
             <ion-button color="primary" (click)="updateNote()">Guardar</ion-button>
           </ion-buttons>
         </ion-toolbar>
       </ion-header>
 
-      <ion-content class="ion-padding">
+      <ion-content>
         <ion-item lines="none" *ngIf="editingNote">
-          <ion-input [(ngModel)]="editingNote.title" placeholder="Nueva Nota" style="font-weight: bold; font-size: 1.2em;"></ion-input>
+          <ion-input [(ngModel)]="editingNote.title" placeholder="Título de la nota"></ion-input>
         </ion-item>
 
         <ion-item lines="none" *ngIf="editingNote">
-          <ion-textarea [(ngModel)]="editingNote.content" placeholder="Contenido" autoGrow="true" style="font-size: 1em;"></ion-textarea>
+          <ion-textarea
+            [(ngModel)]="editingNote.content"
+            placeholder="Contenido de la nota"
+            autoGrow="true">
+          </ion-textarea>
         </ion-item>
       </ion-content>
     </ng-template>
