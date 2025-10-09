@@ -24,21 +24,18 @@ export class NotesPage implements OnInit{
       if (ready) {
         this.db.fetchNotes().subscribe(data => {
           this.notes = data;
-          this.applyFilter();
         });
       }
     });
   }
 
   //Aplicar Filtro
-  applyFilter() {
-    return this.filter === 'all' ? this.notes : this.notes.filter(n => n.favorite);
-  }
-
-  // Cambiar Filtro
-  toggleFilter() {
-    this.filter = this.filter === 'all' ? 'favorites' : 'all';
-    this.applyFilter();
+  get applyFilter(): Note[] {
+    if (this.filter === 'all') {
+      return this.notes;
+    } else {
+      return this.notes.filter(n => n.favorite);
+    }
   }
 
   async addNote() {
