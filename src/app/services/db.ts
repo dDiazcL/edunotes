@@ -62,7 +62,7 @@ export class Db {
           id: r.id,
           title: r.title,
           content: r.content,
-          favorite: !!r.favorite
+          favorite: r.favorite === 1
         });
       }
       this.listaNotas.next(items);

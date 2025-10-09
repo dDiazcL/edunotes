@@ -1,13 +1,8 @@
 import { Component, OnInit } from '@angular/core';
+import { Note } from 'src/app/models/note';
 import { Db } from 'src/app/services/db';
 import { Ui } from 'src/app/services/ui';
 
-interface Note {
-  id: number;
-  title: string;
-  content: string;
-  favorite: boolean;
-}
 
 @Component({
   selector: 'app-notes',
@@ -27,40 +22,56 @@ export class NotesPage implements OnInit{
   ngOnInit() {
     this.db.dbState().subscribe(ready => {
       if (ready) {
-        this.db.fetchNotes().subscribe(list => {
-          this.notes = list;
+        this.db.fetchNotes().subscribe(data => {
+          this.notes = data;
+          this.applyFilter();
         });
       }
     });
   }
 
-  get filteredNotes() {
+  //Aplicar Filtro
+  applyFilter() {
     return this.filter === 'all' ? this.notes : this.notes.filter(n => n.favorite);
   }
 
-  addNote() {
-
-    this.ui.blurActiveElement();
-
-    this.db.addNote('Nueva nota', '');
+  // Cambiar Filtro
+  toggleFilter() {
+    this.filter = this.filter === 'all' ? 'favorites' : 'all';
+    this.applyFilter();
   }
 
-  toggleFavorite(note: Note) {
-    this.db.updateNote(note.id, note.title, note.content, !note.favorite);
+  async addNote() {
+    this.ui.blurActiveElement();
+    await this.db.addNote('Nueva nota', '');
+    this.ui.presentToast('Nota creada 📝');
+  }
+
+  async toggleFavorite(note: Note) {
+    note.favorite = !note.favorite;
+    await this.db.updateNote(note.id!, note.title, note.content, note.favorite);
+    this.ui.presentToast(note.favorite ? 'Marcada como favorita ⭐' : 'Quitada de favoritos 💨');
   }
 
   editNote(note: Note) {
     this.editingNote = { ...note };
   }
 
-  updateNote() {
+  async updateNote() {
     if (!this.editingNote) return;
-    this.db.updateNote(this.editingNote.id, this.editingNote.title, this.editingNote.content, !!this.editingNote.favorite);
+    await this.db.updateNote(
+      this.editingNote.id!,
+      this.editingNote.title,
+      this.editingNote.content,
+      this.editingNote.favorite
+    );
     this.editingNote = null;
+    this.ui.presentToast('Nota actualizada ✅');
   }
 
-  deleteNote(id: number) {
-    this.db.deleteNote(id);
+  async deleteNote(id: number) {
+    await this.db.deleteNote(id);
+    this.ui.presentToast('Nota eliminada 🗑️');
   }
 
   cancelEdit() {
