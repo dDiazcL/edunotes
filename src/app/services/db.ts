@@ -10,7 +10,6 @@ import { Note } from '../models/note';
 export class Db {
 
   public database!: SQLiteObject;
-  private readonly DB_NAME = 'appdata.db';
 
   //SQL para crear la tabla de notas
   tblNotes: string = `CREATE TABLE IF NOT EXISTS notes(
@@ -25,24 +24,30 @@ export class Db {
   private isDbReady: BehaviorSubject<boolean> = new BehaviorSubject(false);
 
   constructor(private sqlite: SQLite, private platform: Platform, private toastController: ToastController) 
-  {this.init();}
+  {this.crearBD();}
 
-  private async init() {
-    await this.platform.ready();
-    try {
-      const dbObj = await this.sqlite.create({
-        name: this.DB_NAME,
+  crearBD() {
+    this.platform.ready().then(() => {
+      this.sqlite.create({
+        name: 'notes.db',
         location: 'default'
-      });
-      this.database = dbObj;
-      await this.database.executeSql(this.tblNotes, []);
-      this.presentToast('Base de datos lista ✅');
+      }).then((db: SQLiteObject) => {
+        this.database = db;
+        this.presentToast('Base de datos creada ✅');
+        this.crearTablas();
+      }).catch(e => this.presentToast(`Error al crear BD: ${e.message || e}`));
+    });
+
+  }
+
+  crearTablas() {
+    this.database.executeSql(this.tblNotes, [])
+    .then(() => {
+      this.presentToast('Tabla de notas lista 📝');
       this.isDbReady.next(true);
       this.loadNotes();
-    } catch (err: any) {
-      this.presentToast('Error al crear DB: ' + (err?.message || err));
-      console.error('SQLite init error', err);
-    }
+    })
+    .catch(e => this.presentToast(`Error al crear tabla: ${e.message || e}`));
   }
 
   //Cargar notas desde la DB y actualizar BehaviorSubject
@@ -51,7 +56,7 @@ export class Db {
     try {
       const res = await this.database.executeSql('SELECT * FROM notes ORDER BY id DESC', []);
       const items: Note[] = [];
-      for (let i = 0; i < res.rows.lenght; i++) {
+      for (let i = 0; i < res.rows.length; i++) {
         const r = res.rows.item(i);
         items.push({
           id: r.id,
