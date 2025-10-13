@@ -12,7 +12,7 @@
 <ion-content class="ion-padding">
   <!-- Lista de notas -->
   <ion-list *ngIf="applyFilter.length > 0; else emptyNotes">
-    <ion-item *ngFor="let note of applyFilter()" (click)="editNote(note)">
+    <ion-item *ngFor="let note of applyFilter" (click)="editNote(note)">
       <ion-label>
         <h2>{{ note.title }}</h2>
         <p>{{ note.content }}</p>
