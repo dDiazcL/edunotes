@@ -1,5 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { Note } from 'src/app/models/note';
+import { Api } from 'src/app/services/api';
 import { Db } from 'src/app/services/db';
 import { Ui } from 'src/app/services/ui';
 
@@ -17,7 +18,7 @@ export class NotesPage implements OnInit{
   filter: 'all' | 'favorites' = 'all';
   editingNote: Note | null = null;
 
-  constructor(private ui: Ui, private db: Db) {}
+  constructor(private ui: Ui, private db: Db, private api: Api) {}
 
   ngOnInit() {
     this.db.dbState().subscribe(ready => {
@@ -27,6 +28,24 @@ export class NotesPage implements OnInit{
         });
       }
     });
+  }
+
+  //Sinc o cons notas desde la API
+  async syncWithApi() {
+    try {
+      this.ui.presentToast('Sincronizando con el servidor...');
+      this.api.getNotes().subscribe(async apiNotes => {
+        //Se toman los 5 primeros para no saturar
+        const limited = apiNotes.slice(0, 5);
+        for (let n of limited) {
+          await this.db.addNote(n.title, n.content || '');
+        }
+        this.ui.presentToast('Notas sincronizadas con éxito 🌐');
+      });
+    } catch (err) {
+      console.error('Error al sincronizar:', err);
+      this.ui.presentToast('Error al sincronizar ⚠️');
+    }
   }
 
   //Aplicar Filtro

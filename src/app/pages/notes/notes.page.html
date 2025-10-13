@@ -2,6 +2,9 @@
   <ion-toolbar color="primary">
     <ion-title>Mis Notas</ion-title>
     <ion-buttons slot="end">
+      <ion-button (click)="syncWithApi()">
+        <ion-icon slot="icon-only" name="cloud-download-outline"></ion-icon>
+      </ion-button>
       <ion-button (click)="filter = (filter === 'all' ? 'favorites' : 'all')">
         <ion-icon [name]="filter === 'all' ? 'star-outline' : 'star'"></ion-icon>
       </ion-button>
