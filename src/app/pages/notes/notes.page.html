@@ -38,6 +38,24 @@
     </ion-text>
   </ng-template>
 
+  <!-- Lista de notas desde la API-->
+  <ion-card color="light" *ngIf="apiNotes.length > 0">
+    <ion-card-header>
+      <ion-card-title>Notas desde la API</ion-card-title>
+    </ion-card-header>
+
+    <ion-card-content>
+      <ion-list>
+        <ion-item *ngFor="let apiNote of apiNotes">
+          <ion-label>
+            <h3>{{ apiNote.title }}</h3>
+            <p>{{ apiNote.content }}</p>
+          </ion-label>
+        </ion-item>
+      </ion-list>
+    </ion-card-content>
+  </ion-card>
+
   <!-- Botón flotante -->
   <ion-fab vertical="bottom" horizontal="end" slot="fixed">
     <ion-fab-button (click)="addNote()">

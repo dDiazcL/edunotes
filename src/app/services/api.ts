@@ -1,6 +1,6 @@
 import { HttpClient, HttpErrorResponse, HttpHeaders } from '@angular/common/http';
 import { Injectable } from '@angular/core';
-import { catchError, Observable, throwError } from 'rxjs';
+import { catchError, map, Observable, throwError } from 'rxjs';
 import { Note } from '../models/note';
 
 @Injectable({
@@ -8,7 +8,7 @@ import { Note } from '../models/note';
 })
 export class Api {
 
-  private baseUrl = 'https://example.com/api';
+  private baseUrl = 'https://jsonplaceholder.typicode.com/posts';
 
   private httpOptions = {
     headers: new HttpHeaders({ 'Content-type': 'application/json' })
@@ -18,9 +18,16 @@ export class Api {
 
   //CRUD de Notas
 
+  //Metodo GET de Prueba
   getNotes(): Observable<Note[]> {
-    return this.http.get<Note[]>(`${this.baseUrl}/notes`)
-    .pipe(catchError(this.handleError));
+    return this.http.get<any[]>(this.baseUrl).pipe(
+      map(data => data.map(item => ({
+        id: item.id,
+        title: item.title,
+        content: item.body,
+        favorite: false
+      })))
+    );
   }
 
   getNoteById(id: number): Observable<Note> {

@@ -14,6 +14,7 @@ import { Ui } from 'src/app/services/ui';
 export class NotesPage implements OnInit{
 
   notes: Note[] = [];
+  apiNotes: any[] = []; //Se guarda lo que viene de la API
   nextId = 1;
   filter: 'all' | 'favorites' = 'all';
   editingNote: Note | null = null;
@@ -26,6 +27,18 @@ export class NotesPage implements OnInit{
         this.db.fetchNotes().subscribe(data => {
           this.notes = data;
         });
+      }
+    });
+
+    this.api.getNotes().subscribe({
+      next: (data) => {
+        console.log('Datos desde API:', data);
+        this.apiNotes = data;
+        this.ui.presentToast('API conectada correctamente!');
+      },
+      error: (err) => {
+        console.error('Error al obtener datos de la API', err);
+        this.ui.presentToast('Error al conectar con la API');
       }
     });
   }
