@@ -32,13 +32,14 @@ export class NotesPage implements OnInit{
 
     this.api.getNotes().subscribe({
       next: (data) => {
+        const limited = data.slice(0, 5);
         console.log('Datos desde API:', data);
-        this.apiNotes = data;
-        this.ui.presentToast('API conectada correctamente!');
+        this.apiNotes = limited;
+        this.ui.presentToast('API conectada correctamente ✅');
       },
       error: (err) => {
         console.error('Error al obtener datos de la API', err);
-        this.ui.presentToast('Error al conectar con la API');
+        this.ui.presentToast('Error al conectar con la API ⚠️');
       }
     });
   }
