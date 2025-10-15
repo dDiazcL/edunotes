@@ -13,8 +13,8 @@ import { Ui } from 'src/app/services/ui';
 })
 export class NotesPage implements OnInit{
 
-  notes: Note[] = [];
-  apiNotes: any[] = []; //Se guarda lo que viene de la API
+  notes: Note[] = [];   //Notas locales (SQLite)
+  apiNotes: any[] = []; //Notas desde la API
   nextId = 1;
   filter: 'all' | 'favorites' = 'all';
   editingNote: Note | null = null;
@@ -32,9 +32,8 @@ export class NotesPage implements OnInit{
 
     this.api.getNotes().subscribe({
       next: (data) => {
-        const limited = data.slice(0, 5);
-        console.log('Datos desde API:', data);
-        this.apiNotes = limited;
+        this.apiNotes = data.slice(0, 5);
+        console.log('Datos desde API:', this.apiNotes);
         this.ui.presentToast('API conectada correctamente ✅');
       },
       error: (err) => {
@@ -42,24 +41,6 @@ export class NotesPage implements OnInit{
         this.ui.presentToast('Error al conectar con la API ⚠️');
       }
     });
-  }
-
-  //Sinc o cons notas desde la API
-  async syncWithApi() {
-    try {
-      this.ui.presentToast('Sincronizando con el servidor...');
-      this.api.getNotes().subscribe(async apiNotes => {
-        //Se toman los 5 primeros para no saturar
-        const limited = apiNotes.slice(0, 5);
-        for (let n of limited) {
-          await this.db.addNote(n.title, n.content || '');
-        }
-        this.ui.presentToast('Notas sincronizadas con éxito 🌐');
-      });
-    } catch (err) {
-      console.error('Error al sincronizar:', err);
-      this.ui.presentToast('Error al sincronizar ⚠️');
-    }
   }
 
   //Aplicar Filtro

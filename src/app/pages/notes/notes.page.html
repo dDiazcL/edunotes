@@ -2,9 +2,6 @@
   <ion-toolbar color="primary">
     <ion-title>Mis Notas</ion-title>
     <ion-buttons slot="end">
-      <ion-button (click)="syncWithApi()">
-        <ion-icon slot="icon-only" name="cloud-download-outline"></ion-icon>
-      </ion-button>
       <ion-button (click)="filter = (filter === 'all' ? 'favorites' : 'all')">
         <ion-icon [name]="filter === 'all' ? 'star-outline' : 'star'"></ion-icon>
       </ion-button>
@@ -13,31 +10,37 @@
 </ion-header>
 
 <ion-content class="ion-padding">
-  <!-- Lista de notas -->
-  <ion-list *ngIf="applyFilter.length > 0; else emptyNotes">
-    <ion-item *ngFor="let note of applyFilter" (click)="editNote(note)">
-      <ion-label>
-        <h2>{{ note.title }}</h2>
-        <p>{{ note.content }}</p>
-      </ion-label>
+  <!-- Notas Locales -->
+  <ion-card>
+    <ion-card-header>
+      <ion-card-title>Notas Locales</ion-card-title>
+    </ion-card-header>
 
-      <ion-button fill="clear" color="warning" (click)="toggleFavorite(note); $event.stopPropagation()">
-        <ion-icon [name]="note.favorite ? 'star' : 'star-outline'"></ion-icon>
-      </ion-button>
+    <ion-list *ngIf="applyFilter.length > 0; else emptyNotes">
+      <ion-item *ngFor="let note of applyFilter" (click)="editNote(note)">
+        <ion-label>
+          <h2>{{ note.title }}</h2>
+          <p>{{ note.content }}</p>
+        </ion-label>
 
-      <ion-button fill="clear" color="danger" (click)="deleteNote(note.id); $event.stopPropagation()">
-        <ion-icon name="trash-outline"></ion-icon>
-      </ion-button>
-    </ion-item>
-  </ion-list>
+        <ion-button fill="clear" color="warning" (click)="toggleFavorite(note); $event.stopPropagation()">
+          <ion-icon [name]="note.favorite ? 'star' : 'star-outline'"></ion-icon>
+        </ion-button>
 
-  <!-- Cuando no hay notas -->
-  <ng-template #emptyNotes>
-    <ion-text color="medium">
-      <p class="ion-text-center">No tienes notas aún 📝</p>
-    </ion-text>
-  </ng-template>
+        <ion-button fill="clear" color="danger" (click)="deleteNote(note.id); $event.stopPropagation()">
+          <ion-icon name="trash-outline"></ion-icon>
+        </ion-button>
+      </ion-item>
+    </ion-list>
 
+    <!-- Cuando no hay notas -->
+    <ng-template #emptyNotes>
+      <ion-text color="medium">
+        <p class="ion-text-center">No tienes notas aún 📝</p>
+      </ion-text>
+    </ng-template>
+  </ion-card>
+     
   <!-- Lista de notas desde la API-->
   <ion-card color="light" *ngIf="apiNotes.length > 0">
     <ion-card-header>
