@@ -15,13 +15,13 @@ export class HomePage implements OnInit {
 
   constructor(private auth: Auth,private router: Router, private ui: Ui) {}
 
-  ngOnInit() {
+  async ngOnInit() {
     const extras = this.router.getCurrentNavigation();
 
     if (extras?.extras?.state?.['email']) {
       this.email = extras.extras.state['email'];
     } else {
-      const user = this.auth.getUSer();
+      const user = await this.auth.getUser();
       if (user) {
         this.email = user.email;
       }
@@ -38,9 +38,10 @@ export class HomePage implements OnInit {
     this.router.navigate(['/tabs/notes']);
   }
 
-  logout() {
+  async logout() {
     this.ui.blurActiveElement();
-    this.auth.logout();
+    await this.auth.logout();
+    this.ui.presentToast('Sesion cerrada 👋');
     this.router.navigate(['/login']);
   }
 }

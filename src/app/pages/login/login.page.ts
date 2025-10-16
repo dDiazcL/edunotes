@@ -27,7 +27,7 @@ export class LoginPage {
     await toast.present();
   }
 
-  login() {
+  async login() {
     if (!this.email || !this.password) {
       this.presentToast('Por favor ingresa correo y contraseña ⚠️')
       return;
@@ -35,6 +35,7 @@ export class LoginPage {
 
     const emailVal = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
     const passwordVal = /^(?=.*[A-Za-z])(?=.*\d)[A-Za-z\d]{6,}$/;
+
     if (!emailVal.test(this.email)){
       this.presentToast('Correo inválido 📧');
       return;
@@ -45,14 +46,12 @@ export class LoginPage {
       return;
     }
 
-    this.auth.login(this.email, this.password);
+    await this.auth.saveUser(this.email, this.password);
+    this.presentToast('Sesion iniciada correctamente 🚀');
 
-    let extras: NavigationExtras = {
+    const extras: NavigationExtras = {
       replaceUrl: true,
-      state: {
-        email: this.email,
-        password: this.password
-      }
+      state: { email: this.email}
     };
 
     this.ui.blurActiveElement();
