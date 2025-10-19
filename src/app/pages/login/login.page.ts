@@ -46,16 +46,23 @@ export class LoginPage {
       return;
     }
 
-    await this.auth.saveUser(this.email, this.password);
-    this.presentToast('Sesion iniciada correctamente 🚀');
+    try {
+      await this.auth.saveUser(this.email, this.password);
 
-    const extras: NavigationExtras = {
-      replaceUrl: true,
-      state: { email: this.email}
-    };
+      let extras: NavigationExtras = {
+        replaceUrl: true,
+        state: {
+          email: this.email
+        }
+      };
 
-    this.ui.blurActiveElement();
-    this.router.navigate(['/tabs/home'], extras);
+      this.ui.blurActiveElement();
+      this.ui.presentToast('Inicio de Sesion Exitoso ✅');
+      this.router.navigate(['/tabs/home'], extras);
+    } catch (err) {
+      console.error('Error en Login:', err);
+      this.ui.presentToast('Error al iniciar sesion ❌');
+    }
   }
 
   goToReset() {

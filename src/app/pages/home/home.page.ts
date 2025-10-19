@@ -41,7 +41,7 @@ export class HomePage implements OnInit {
   async logout() {
     this.ui.blurActiveElement();
     await this.auth.logout();
-    this.ui.presentToast('Sesion cerrada 👋');
+    await this.ui.presentToast('Sesion cerrada 👋');
     this.router.navigate(['/login']);
   }
 }

@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core';
-import { SQLite, SQLiteObject } from '@awesome-cordova-plugins/sqlite';
+import { SQLite, SQLiteObject } from '@awesome-cordova-plugins/sqlite/ngx';
 import { Platform } from '@ionic/angular';
 
 @Injectable({
@@ -36,28 +36,44 @@ export class Auth {
     }
   }
   // Guardar o actualizar usuario
-  async saveUser(email: string, password: string) {
+  async saveUser(email: string, password: string): Promise<void> {
+    await this.db.executeSql('DELETE FROM users WHERE email = ?', [email]);
     const sql = 'INSERT OR REPLACE INTO users (email, password, isLoggedIn) VALUES(?, ?, 1)';
     await this.db.executeSql(sql, [email, password]);
   }
 
   // Obtener usuario actual logeado
   async getUser(): Promise<any | null> {
-    const res = await this.db.executeSql('SELECT * FROM users WHERE isLoggedIn = 1 LIMIT 1', []);
-    if (res.rows.length > 0) {
-      return res.rows.item(0);
+    try {
+      const res = await this.db.executeSql('SELECT * FROM users WHERE isLoggedIn = 1 LIMIT 1', []);
+      if (res.rows.length > 0) {
+        return res.rows.item(0);
+      }
+      return null;
+    } catch (err) {
+      console.error('Error obteniendo usuario:', err);
+      return null;
     }
-    return null;
   }
 
   //Cerrar cesion
-  async logout() {
-    await this.db.executeSql('UPDATE users SET isLoggedIn = 0', []);
+  async logout(): Promise<void> {
+    try {
+      await this.db.executeSql('UPDATE users SET isLoggedIn = 0', []);
+      console.log('👋 Sesion cerrada');
+    } catch (err) {
+      console.error('Error cerrando sesion:', err)
+    }
   }
 
   //Verificar sesion activa
   async isAuthenticated(): Promise<boolean> {
-    const user = await this.getUser();
-    return !!user;
+    try {
+      const user = await this.getUser();
+      return !!user;
+    } catch (err) {
+      console.error('Error verificando sesion:', err);
+      return false;
+    }
   }
 }

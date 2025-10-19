@@ -1,5 +1,7 @@
-import { Component } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
+import { Platform } from '@ionic/angular';
+import { Auth } from './services/auth';
 
 @Component({
   selector: 'app-root',
@@ -7,13 +9,17 @@ import { Router } from '@angular/router';
   styleUrls: ['app.component.scss'],
   standalone: false,
 })
-export class AppComponent {
-  constructor(private router: Router) {}
+export class AppComponent implements OnInit{
+  constructor(private router: Router, private platform: Platform, private auth: Auth) {}
 
-  navigate(path: string){
-    if (document.activeElement instanceof HTMLElement) {
-      document.activeElement.blur();
+  async ngOnInit() {
+    await this.platform.ready();
+    const isLogged = await this.auth.isAuthenticated();
+
+    if (isLogged) {
+      this.router.navigate(['/tabs/home']);
+    } else {
+      this.router.navigate(['/login']);
     }
-    this.router.navigate([path]);
   }
 }
