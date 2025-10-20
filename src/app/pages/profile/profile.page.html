@@ -11,6 +11,17 @@
 </ion-header>
 
 <ion-content class="ion-padding">
+
+  <!-- Imagen de perfil -->
+   <ion-card>
+    <ion-card-content class="ion-text-center">
+      <img *ngIf="user.image; else noImage" [src]="user.image" class="profile-img" />
+      <ng-template #noImage>
+        <ion-icon name="person-circle-outline" size="large"></ion-icon>
+      </ng-template>
+    </ion-card-content>
+   </ion-card>
+
   <!-- Tarjeta del perfil -->
   <ion-card>
     <ion-card-content>
@@ -41,7 +52,19 @@
   </ion-card>
 
   <!-- Botones solo visibles en edición -->
-  <div *ngIf="isEditing">
+   
+  <div *ngIf="isEditing" class="ion-text-center">
+    
+    <ion-button expand="block" color="secondary" (click)="takePhoto()">
+      <ion-icon slot="start" name="camera-outline"></ion-icon>
+      Tomar Foto
+    </ion-button>
+
+    <ion-button expand="block" color="tertiary" (click)="pickImage()">
+      <ion-icon slot="start" name="image-outline"></ion-icon>
+      Elegir de Galería
+    </ion-button>
+
     <ion-button expand="block" color="success" (click)="saveProfile()">Guardar</ion-button>
     <ion-button expand="block" color="danger" (click)="deleteProfile()">Eliminar</ion-button>
   </div>
