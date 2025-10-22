@@ -6,10 +6,9 @@ import { Platform } from '@ionic/angular';
 export const authGuard: CanActivateFn = async (route, state) => {
   const router = inject(Router);
   const auth = inject(Auth);
-  const platform = inject(Platform)
 
+  await new Promise(resolve => setTimeout(resolve, 400));
 
-  await platform.ready();
   const isLoggedIn = await auth.isAuthenticated();
   const url = state.url;
 

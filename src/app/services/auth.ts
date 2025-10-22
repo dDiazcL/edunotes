@@ -8,6 +8,7 @@ import { Platform } from '@ionic/angular';
 export class Auth {
 
   private db!: SQLiteObject;
+  private dbReady = false;
 
   constructor(private sqlite: SQLite, private platform: Platform) {
     this.initDB();
@@ -29,7 +30,8 @@ export class Auth {
           isLoggedIn INTEGER DEFAULT 0
         );
       `, []);
-
+      
+      this.dbReady = true;
       console.log('Base de datos de usuarios lista ✅');
     } catch (err) {
       console.error('Error creando la base de datos:', err);
@@ -69,6 +71,10 @@ export class Auth {
   //Verificar sesion activa
   async isAuthenticated(): Promise<boolean> {
     try {
+      if (!this.dbReady) {
+        await new Promise(resolve => setTimeout(resolve, 500));
+      }
+
       const user = await this.getUser();
       return !!user;
     } catch (err) {
