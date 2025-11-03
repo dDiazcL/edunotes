@@ -9,6 +9,7 @@ export class Auth {
 
   private db!: SQLiteObject;
   private dbReady = false;
+  private isWeb = false;
 
   constructor(private sqlite: SQLite, private platform: Platform) {
     this.initDB();
@@ -16,6 +17,14 @@ export class Auth {
 
   async initDB() {
     await this.platform.ready();
+    this.isWeb = !this.platform.is('cordova') && !this.platform.is('capacitor');
+
+    if(this.isWeb) {
+      console.log('Modo Navegador: usando LocalStorage en lugar de SQLite');
+      this.dbReady = true;
+      return;
+    }
+
     try {
       this.db = await this.sqlite.create({
         name: 'users.db',
@@ -39,6 +48,11 @@ export class Auth {
   }
   // Guardar o actualizar usuario
   async saveUser(email: string, password: string): Promise<void> {
+    if (this.isWeb) {
+      localStorage.setItem('user', JSON.stringify({ email, password, isLoggedIn: true}));
+      return;
+    }
+
     await this.db.executeSql('DELETE FROM users WHERE email = ?', [email]);
     const sql = 'INSERT OR REPLACE INTO users (email, password, isLoggedIn) VALUES(?, ?, 1)';
     await this.db.executeSql(sql, [email, password]);
@@ -46,40 +60,31 @@ export class Auth {
 
   // Obtener usuario actual logeado
   async getUser(): Promise<any | null> {
-    try {
-      const res = await this.db.executeSql('SELECT * FROM users WHERE isLoggedIn = 1 LIMIT 1', []);
-      if (res.rows.length > 0) {
-        return res.rows.item(0);
-      }
-      return null;
-    } catch (err) {
-      console.error('Error obteniendo usuario:', err);
-      return null;
+    if (this.isWeb) {
+      const user = localStorage.getItem('user');
+      return user ? JSON.parse(user) : null;
     }
+
+    const res = await this.db.executeSql('SELECT * FROM users WHERE isLoggedIn = 1 LIMIT 1', []);
+    return res.rows.length > 0 ? res.rows.item(0) : null;
   }
 
   //Cerrar cesion
   async logout(): Promise<void> {
-    try {
-      await this.db.executeSql('UPDATE users SET isLoggedIn = 0', []);
-      console.log('👋 Sesion cerrada');
-    } catch (err) {
-      console.error('Error cerrando sesion:', err)
+    if (this.isWeb) {
+      localStorage.removeItem('user');
+      console.log('Sesion cerrada (Web)')
+      return;
     }
+
+    await this.db.executeSql('UPDATE users SET isLoggedIn = 0', []);
+    console.log('Sesion cerrada (movil)');
   }
 
   //Verificar sesion activa
   async isAuthenticated(): Promise<boolean> {
-    try {
-      if (!this.dbReady) {
-        await new Promise(resolve => setTimeout(resolve, 500));
-      }
-
-      const user = await this.getUser();
-      return !!user;
-    } catch (err) {
-      console.error('Error verificando sesion:', err);
-      return false;
-    }
+    if (!this.dbReady) await new Promise(resolve => setTimeout(resolve, 500));
+    const user = await this.getUser();
+    return !!user;
   }
 }

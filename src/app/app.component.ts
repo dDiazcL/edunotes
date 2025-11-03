@@ -14,12 +14,16 @@ export class AppComponent implements OnInit{
 
   async ngOnInit() {
     await this.platform.ready();
+    console.log('Plataforma lista, verificando sesión...');
+
     const isLogged = await this.auth.isAuthenticated();
 
     if (isLogged) {
-      this.router.navigate(['/tabs/home']);
+      console.log('Sesíon activa, redirigiendo a /tabs/home');
+      this.router.navigateByUrl('(/tabs/home', {replaceUrl: true});
     } else {
-      this.router.navigate(['/login']);
+      console.log('Sin Sesión. redirigiendo a /login');
+      this.router.navigateByUrl('/login', {replaceUrl: true});
     }
   }
 }
