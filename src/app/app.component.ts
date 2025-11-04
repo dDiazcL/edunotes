@@ -21,7 +21,7 @@ export class AppComponent implements OnInit{
 
     if (isLogged) {
       console.log('Sesíon activa, redirigiendo a /tabs/home');
-      this.router.navigateByUrl('(/tabs/home');
+      this.router.navigateByUrl('/tabs/home');
     } else {
       console.log('Sin Sesión. redirigiendo a /login');
       this.router.navigateByUrl('/login');

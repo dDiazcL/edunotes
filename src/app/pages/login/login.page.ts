@@ -48,17 +48,9 @@ export class LoginPage {
 
     try {
       await this.auth.saveUser(this.email, this.password);
-
-      let extras: NavigationExtras = {
-        replaceUrl: true,
-        state: {
-          email: this.email
-        }
-      };
-
       this.ui.blurActiveElement();
-      this.ui.presentToast('Inicio de Sesion Exitoso ✅');
-      this.router.navigate(['/tabs/home'], extras);
+      await this.ui.presentToast('Inicio de Sesion Exitoso ✅');
+      this.router.navigateByUrl('/tabs/home', {replaceUrl: true });
     } catch (err) {
       console.error('Error en Login:', err);
       this.ui.presentToast('Error al iniciar sesion ❌');
