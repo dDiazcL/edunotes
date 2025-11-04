@@ -11,9 +11,10 @@ const routes: Routes = [
       { path: 'home', loadChildren: () => import('../home/home.module').then(m => m.HomePageModule) },
       { path: 'notes', loadChildren: () => import('../notes/notes.module').then(m => m.NotesPageModule) },
       { path: 'profile', loadChildren: () => import('../profile/profile.module').then(m => m.ProfilePageModule) },
-      { path: '', redirectTo: '/tabs/home', pathMatch: 'full' }
+      { path: '', redirectTo: 'home', pathMatch: 'full' }
     ]
-  }
+  },
+  { path: '', redirectTo: '/tabs/home', pathMatch: 'full' }
 ];
 
 @NgModule({

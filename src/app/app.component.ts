@@ -15,15 +15,16 @@ export class AppComponent implements OnInit{
   async ngOnInit() {
     await this.platform.ready();
     console.log('Plataforma lista, verificando sesión...');
-
     const isLogged = await this.auth.isAuthenticated();
+
+    await new Promise(resolve => setTimeout(resolve, 200));
 
     if (isLogged) {
       console.log('Sesíon activa, redirigiendo a /tabs/home');
-      this.router.navigateByUrl('(/tabs/home', {replaceUrl: true});
+      this.router.navigateByUrl('(/tabs/home', { replaceUrl: true});
     } else {
       console.log('Sin Sesión. redirigiendo a /login');
-      this.router.navigateByUrl('/login', {replaceUrl: true});
+      this.router.navigateByUrl('/login', { replaceUrl: true});
     }
   }
 }
