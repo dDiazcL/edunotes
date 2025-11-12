@@ -1,90 +1,70 @@
 import { Injectable } from '@angular/core';
-import { SQLite, SQLiteObject } from '@awesome-cordova-plugins/sqlite/ngx';
-import { Platform } from '@ionic/angular';
 
 @Injectable({
   providedIn: 'root'
 })
+
 export class Auth {
 
-  private db!: SQLiteObject;
-  private dbReady = false;
-  private isWeb = false;
+  private readonly STORAGE_KEY = 'app_users';
+  private readonly SESSION_KEY = 'logged_user';
 
-  constructor(private sqlite: SQLite, private platform: Platform) {
-    this.initDB();
-  }
+  constructor() {}
 
-  async initDB() {
-    await this.platform.ready();
-    this.isWeb = !this.platform.is('cordova') && !this.platform.is('capacitor');
+  // Registrar usuario
 
-    if(this.isWeb) {
-      console.log('Modo Navegador: usando LocalStorage en lugar de SQLite');
-      this.dbReady = true;
-      return;
+  async registerUser(email: string, password: string): Promise<boolean> {
+    const users = this.getAllUsers();
+
+    const exists = users.find(u => u.email === email);
+    if(exists) {
+      console.warn('El usuario ya existe');
+      return false;
     }
 
-    try {
-      this.db = await this.sqlite.create({
-        name: 'users.db',
-        location: 'default'
-      });
-
-      await this.db.executeSql(`
-        CREATE TABLE IF NOT EXISTS users (
-          id INTEGER PRIMARY KEY AUTOINCREMENT,
-          email TEXT UNIQUE,
-          password TEXT,
-          isLoggedIn INTEGER DEFAULT 0
-        );
-      `, []);
-      
-      this.dbReady = true;
-      console.log('Base de datos de usuarios lista ✅');
-    } catch (err) {
-      console.error('Error creando la base de datos:', err);
-    }
+    users.push({ email, password });
+    localStorage.setItem(this.STORAGE_KEY, JSON.stringify(users));
+    console.log('Usuario registrado ✅');
+    return true;
   }
-  // Guardar o actualizar usuario
+
+  // Guardar sesion activa
+
   async saveUser(email: string, password: string): Promise<void> {
-    if (this.isWeb) {
-      localStorage.setItem('user', JSON.stringify({ email, password, isLoggedIn: true}));
-      return;
+    const users = this.getAllUsers();
+    const found = users.find(u => u.email === email && u.password === password);
+
+    if (!found) {
+      throw new Error('Usuario o contraseña invalidos');
     }
 
-    await this.db.executeSql('DELETE FROM users WHERE email = ?', [email]);
-    const sql = 'INSERT OR REPLACE INTO users (email, password, isLoggedIn) VALUES(?, ?, 1)';
-    await this.db.executeSql(sql, [email, password]);
+    localStorage.setItem(this.SESSION_KEY, JSON.stringify(found));
+    console.log('Usuario logeado ✅');
   }
 
   // Obtener usuario actual logeado
+
   async getUser(): Promise<any | null> {
-    if (this.isWeb) {
-      const user = localStorage.getItem('user');
-      return user ? JSON.parse(user) : null;
-    }
-
-    const res = await this.db.executeSql('SELECT * FROM users WHERE isLoggedIn = 1 LIMIT 1', []);
-    return res.rows.length > 0 ? res.rows.item(0) : null;
+    const user = localStorage.getItem(this.SESSION_KEY);
+    return user ? JSON.parse(user) : null;
   }
 
-  //Cerrar cesion
+  // Cerrar sesion
+
   async logout(): Promise<void> {
-    if (this.isWeb) {
-      localStorage.removeItem('user');
-      console.log('Sesion cerrada (Web)')
-      return;
-    }
-
-    await this.db.executeSql('UPDATE users SET isLoggedIn = 0', []);
-    console.log('Sesion cerrada (movil)');
+    localStorage.removeItem(this.SESSION_KEY);
+    console.log('👋 Sesion cerrada');
   }
 
-  //Verificar sesion activa
+  // Verificar si hay sesion activa
+
   async isAuthenticated(): Promise<boolean> {
-    if (!this.dbReady) await new Promise(resolve => setTimeout(resolve, 500));
-    const user = await this.getUser();
-    return !!user;
+    return !!localStorage.getItem(this.SESSION_KEY);
+  }
+
+  // Obtener todos los usuarios (interno)
+  private getAllUsers(): any[] {
+    const data = localStorage.getItem(this.STORAGE_KEY);
+    return data ? JSON.parse(data) : [];
   }
 }

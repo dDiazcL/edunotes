@@ -14,6 +14,10 @@ const routes: Routes = [
     loadChildren: () => import('./pages/login/login.module').then( m => m.LoginPageModule)
   },
   {
+    path: 'register',
+    loadChildren: () => import('./pages/register/register.module').then( m => m.RegisterPageModule)
+  },
+  {
     path: 'reset-password',
     loadChildren: () => import('./pages/reset-password/reset-password.module').then( m => m.ResetPasswordPageModule)
   },
@@ -31,7 +35,6 @@ const routes: Routes = [
     redirectTo: 'not-found',
     pathMatch: 'full'
   },
-
 ];
 
 @NgModule({

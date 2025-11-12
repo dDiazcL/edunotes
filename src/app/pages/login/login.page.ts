@@ -61,4 +61,8 @@ export class LoginPage {
     this.ui.blurActiveElement();
     this.router.navigate(['/reset-password']);
   }
+
+  goToRegister() {
+    this.router.navigateByUrl('/register');
+  }
 }
