@@ -2,6 +2,7 @@ import { Component  } from '@angular/core';
 import { Router } from '@angular/router';
 import { ToastController } from '@ionic/angular';
 import { Auth } from 'src/app/services/auth';
+import { EmailService } from 'src/app/services/email.service';
 
 @Component({
   selector: 'app-register',
@@ -14,7 +15,7 @@ export class RegisterPage {
   email = '';
   password = '';
 
-  constructor( private router: Router, private auth: Auth, private toastCtrl: ToastController) {}
+  constructor( private router: Router, private auth: Auth, private toastCtrl: ToastController, private emailService: EmailService) {}
 
   async presentToast(message: string, color: string = 'danger') {
     const toast = await this.toastCtrl.create({
@@ -48,6 +49,14 @@ export class RegisterPage {
     const created = await this.auth.registerUser(this.email, this.password);
     if(created) {
       await this.presentToast('Registro exitoso 🎉', 'succes');
+
+      await this.emailService.sendEmail({
+        email: this.email,
+        user_name: this.email.split('@'[0]),
+        user_email: this.email,
+        message: `¡Bienvenido/a a EduNotes! 🎓 Tu cuenta ha sido registrada con éxito.`
+      });
+
       this.router.navigateByUrl('/login', {replaceUrl: true});
     } else {
       this.presentToast('El usuario ya existe ❌');
