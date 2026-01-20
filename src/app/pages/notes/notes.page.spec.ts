@@ -3,18 +3,20 @@ import { NotesPage } from './notes.page';
 import { IonicModule } from '@ionic/angular';
 import { NO_ERRORS_SCHEMA } from '@angular/core';
 import { Db } from 'src/app/services/db';
+import { Api } from 'src/app/services/api';
 
 class DbServiceMock {
   getNotes() {
     return Promise.resolve([]);
   }
-
   addNote() {
     return Promise.resolve();
   }
+}
 
-  deleteNote() {
-    return Promise.resolve();
+class ApiMock {
+  get() {
+    return Promise.resolve({});
   }
 }
 
@@ -27,7 +29,8 @@ describe('NotesPage', () => {
       declarations: [NotesPage],
       imports: [IonicModule.forRoot()],
       providers: [
-        { provide: Db, useClass: DbServiceMock }
+        { provide: Db, useClass: DbServiceMock },
+        { provide: Api, useClass: ApiMock }
       ],
       schemas: [NO_ERRORS_SCHEMA]
     }).compileComponents();
