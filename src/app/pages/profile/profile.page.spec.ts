@@ -1,6 +1,7 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
-import { IonicModule } from '@ionic/angular';
 import { ProfilePage } from './profile.page';
+import { IonicModule } from '@ionic/angular';
+import { NO_ERRORS_SCHEMA } from '@angular/core';
 
 describe('ProfilePage', () => {
   let component: ProfilePage;
@@ -9,7 +10,8 @@ describe('ProfilePage', () => {
   beforeEach(async () => {
     await TestBed.configureTestingModule({
       declarations: [ProfilePage],
-      imports: [IonicModule.forRoot()]
+      imports: [IonicModule.forRoot()],
+      schemas: [NO_ERRORS_SCHEMA]
     }).compileComponents();
 
     fixture = TestBed.createComponent(ProfilePage);
@@ -17,11 +19,11 @@ describe('ProfilePage', () => {
     fixture.detectChanges();
   });
 
-  it('debería crear la página de perfil de usuario', () => {
+  it('should create profile page', () => {
     expect(component).toBeTruthy();
   });
 
-  it('debe ejecutar el método takePhoto()', () => {
+  it('should call takePhoto method', () => {
     spyOn(component, 'takePhoto');
     component.takePhoto();
     expect(component.takePhoto).toHaveBeenCalled();

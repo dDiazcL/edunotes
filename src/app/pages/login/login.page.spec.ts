@@ -1,6 +1,7 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
-import { IonicModule } from '@ionic/angular';
 import { LoginPage } from './login.page';
+import { IonicModule } from '@ionic/angular';
+import { NO_ERRORS_SCHEMA } from '@angular/core';
 
 describe('LoginPage', () => {
   let component: LoginPage;
@@ -9,7 +10,8 @@ describe('LoginPage', () => {
   beforeEach(async () => {
     await TestBed.configureTestingModule({
       declarations: [LoginPage],
-      imports: [IonicModule.forRoot()]
+      imports: [IonicModule.forRoot()],
+      schemas: [NO_ERRORS_SCHEMA]
     }).compileComponents();
 
     fixture = TestBed.createComponent(LoginPage);
@@ -17,12 +19,13 @@ describe('LoginPage', () => {
     fixture.detectChanges();
   });
 
-  it('debería crear la pagina de login', () => {
+  it('should create login page', () => {
     expect(component).toBeTruthy();
   });
 
-  it('debe ejecutar el metodo login()', () => {
+  it('should call login method', () => {
     spyOn(component, 'login');
+    component.login();
     expect(component.login).toHaveBeenCalled();
   });
 });

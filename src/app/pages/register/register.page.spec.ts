@@ -1,6 +1,7 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
-import { IonicModule } from '@ionic/angular';
 import { RegisterPage } from './register.page';
+import { IonicModule } from '@ionic/angular';
+import { NO_ERRORS_SCHEMA } from '@angular/core';
 
 describe('RegisterPage', () => {
   let component: RegisterPage;
@@ -9,7 +10,8 @@ describe('RegisterPage', () => {
   beforeEach(async () => {
     await TestBed.configureTestingModule({
       declarations: [RegisterPage],
-      imports: [IonicModule.forRoot()]
+      imports: [IonicModule.forRoot()],
+      schemas: [NO_ERRORS_SCHEMA]
     }).compileComponents();
 
     fixture = TestBed.createComponent(RegisterPage);
@@ -17,11 +19,11 @@ describe('RegisterPage', () => {
     fixture.detectChanges();
   });
 
-  it('debería crear la página de registro', () => {
+  it('should create register page', () => {
     expect(component).toBeTruthy();
   });
 
-  it('debe ejecutar el método register()', () => {
+  it('should call register method', () => {
     spyOn(component, 'register');
     component.register();
     expect(component.register).toHaveBeenCalled();
