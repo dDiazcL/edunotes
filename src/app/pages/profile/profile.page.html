@@ -1,0 +1,71 @@
+<ion-header>
+  <ion-toolbar color="primary">
+    <ion-title>Perfil</ion-title>
+    <ion-buttons slot="end">
+      <!-- Botón para activar/desactivar edición -->
+      <ion-button (click)="toggleEdit()">
+        <ion-icon [name]="isEditing ? 'close-outline' : 'create-outline'"></ion-icon>
+      </ion-button>
+    </ion-buttons>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content class="ion-padding">
+
+  <!-- Imagen de perfil -->
+   <ion-card>
+    <ion-card-content class="ion-text-center">
+      <img *ngIf="user.image; else noImage" [src]="user.image" class="profile-img" />
+      <ng-template #noImage>
+        <ion-icon name="person-circle-outline" size="large"></ion-icon>
+      </ng-template>
+    </ion-card-content>
+   </ion-card>
+
+  <!-- Tarjeta del perfil -->
+  <ion-card>
+    <ion-card-content>
+      <!-- Nombre -->
+      <ion-item *ngIf="isEditing; else showName">
+        <ion-input [(ngModel)]="user.name" placeholder="Nombre completo"></ion-input>
+      </ion-item>
+      <ng-template #showName>
+        <h2 class="ion-text-center">{{ user.name || 'Sin nombre' }}</h2>
+      </ng-template>
+
+      <!-- Correo -->
+      <ion-item *ngIf="isEditing; else showEmail">
+        <ion-input [(ngModel)]="user.email" placeholder="Correo electrónico"></ion-input>
+      </ion-item>
+      <ng-template #showEmail>
+        <p class="ion-text-center">{{ user.email || 'Sin correo' }}</p>
+      </ng-template>
+
+      <!-- Biografía -->
+      <ion-item *ngIf="isEditing; else showBio">
+        <ion-textarea [(ngModel)]="user.bio" placeholder="Biografía"></ion-textarea>
+      </ion-item>
+      <ng-template #showBio>
+        <p class="ion-text-center">{{ user.bio || 'Sin biografía' }}</p>
+      </ng-template>
+    </ion-card-content>
+  </ion-card>
+
+  <!-- Botones solo visibles en edición -->
+   
+  <div *ngIf="isEditing" class="ion-text-center">
+    
+    <ion-button expand="block" color="secondary" (click)="takePhoto()">
+      <ion-icon slot="start" name="camera-outline"></ion-icon>
+      Tomar Foto
+    </ion-button>
+
+    <ion-button expand="block" color="tertiary" (click)="pickImage()">
+      <ion-icon slot="start" name="image-outline"></ion-icon>
+      Elegir de Galería
+    </ion-button>
+
+    <ion-button expand="block" color="success" (click)="saveProfile()">Guardar</ion-button>
+    <ion-button expand="block" color="danger" (click)="deleteProfile()">Eliminar</ion-button>
+  </div>
+</ion-content>

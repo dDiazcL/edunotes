@@ -1,0 +1,21 @@
+<ion-header>
+  <ion-toolbar color="primary">
+    <ion-title>Inicio</ion-title>
+    <ion-buttons slot="end">
+      <!-- Botón Logout -->
+      <ion-button (click)="logout()">
+        <ion-icon slot="icon-only" name="log-out-outline"></ion-icon>
+      </ion-button>
+    </ion-buttons>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content class="ion-padding">
+  <h2>Bienvenido, {{ email }}</h2>
+
+  <ion-text color="medium">
+    <p class="ion-margin-top">
+      Usa la barra de pestañas inferior para acceder rápidamente a tus Notas 📒 y Perfil 👤
+    </p>
+  </ion-text>
+</ion-content>
