@@ -1,55 +1,61 @@
 <ion-header>
   <ion-toolbar color="primary">
-    <ion-title>Mis Notas</ion-title>
+    <ion-title aria-label="notes-tile">Mis Notas</ion-title>
     <ion-buttons slot="end">
-      <ion-button (click)="filter = (filter === 'all' ? 'favorites' : 'all')">
-        <ion-icon [name]="filter === 'all' ? 'star-outline' : 'star'"></ion-icon>
+      <ion-button aria-label="notes-filter-toggle" (click)="filter = (filter === 'all' ? 'favorites' : 'all')">
+        <ion-icon aria-label="notes-filter-icon" [name]="filter === 'all' ? 'star-outline' : 'star'"></ion-icon>
       </ion-button>
     </ion-buttons>
   </ion-toolbar>
 </ion-header>
 
+
 <ion-content class="ion-padding">
   <!-- Notas Locales -->
   <ion-card>
     <ion-card-header>
-      <ion-card-title>Notas Locales</ion-card-title>
+      <ion-card-title aria-label="notes-local-title">Notas Locales</ion-card-title>
     </ion-card-header>
 
+
     <ion-list *ngIf="applyFilter.length > 0; else emptyNotes">
-      <ion-item *ngFor="let note of applyFilter" (click)="editNote(note)">
+      <ion-item *ngFor="let note of applyFilter" aria-label="notes-item" (click)="editNote(note)">
         <ion-label>
-          <h2>{{ note.title }}</h2>
-          <p>{{ note.content }}</p>
+          <h2 aria-label="notes-item-title">{{ note.title }}</h2>
+          <p aria-label="notes-item-content">{{ note.content }}</p>
         </ion-label>
 
-        <ion-button fill="clear" color="warning" (click)="toggleFavorite(note); $event.stopPropagation()">
+
+        <ion-button aria-label="notes-favorite-toggle" fill="clear" color="warning" (click)="toggleFavorite(note); $event.stopPropagation()">
           <ion-icon [name]="note.favorite ? 'star' : 'star-outline'"></ion-icon>
         </ion-button>
 
-        <ion-button fill="clear" color="danger" (click)="deleteNote(note.id); $event.stopPropagation()">
+
+        <ion-button aria-label="notes-delete" fill="clear" color="danger" (click)="deleteNote(note.id); $event.stopPropagation()">
           <ion-icon name="trash-outline"></ion-icon>
         </ion-button>
       </ion-item>
     </ion-list>
 
+
     <!-- Cuando no hay notas -->
     <ng-template #emptyNotes>
-      <ion-text color="medium">
+      <ion-text aria-label="notes-empty-message" color="medium">
         <p class="ion-text-center">No tienes notas aún 📝</p>
       </ion-text>
     </ng-template>
   </ion-card>
      
   <!-- Lista de notas desde la API-->
-  <ion-card color="light" *ngIf="apiNotes.length > 0">
+  <ion-card aria-label="notes-api-card" color="light" *ngIf="apiNotes.length > 0">
     <ion-card-header>
-      <ion-card-title>Notas desde la API</ion-card-title>
+      <ion-card-title aria-label="notes-api-title">Notas desde la API</ion-card-title>
     </ion-card-header>
+
 
     <ion-card-content>
       <ion-list>
-        <ion-item *ngFor="let apiNote of apiNotes">
+        <ion-item *ngFor="let apiNote of apiNotes" aria-label="notes-api-item">
           <ion-label>
             <h3>{{ apiNote.title }}</h3>
             <p>{{ apiNote.content }}</p>
@@ -59,35 +65,40 @@
     </ion-card-content>
   </ion-card>
 
+
   <!-- Botón flotante -->
   <ion-fab vertical="bottom" horizontal="end" slot="fixed">
-    <ion-fab-button (click)="addNote()">
+    <ion-fab-button aria-label="notes-add-button" (click)="addNote()">
       <ion-icon name="add-outline"></ion-icon>
     </ion-fab-button>
   </ion-fab>
 
+
   <!-- Modal para editar o agregar nota -->
-  <ion-modal [isOpen]="editingNote !== null" (didDismiss)="cancelEdit()">
+  <ion-modal aria-label="notes-edit-modal" [isOpen]="editingNote !== null" (didDismiss)="cancelEdit()">
     <ng-template>
       <ion-header>
         <ion-toolbar color="light">
           <ion-buttons slot="start">
-            <ion-button (click)="cancelEdit()">Cerrar</ion-button>
+            <ion-button aria-label="notes-edit-cancel" (click)="cancelEdit()">Cerrar</ion-button>
           </ion-buttons>
-          <ion-title>Editar Nota</ion-title>
+          <ion-title aria-label="notes-edit-title">Editar Nota</ion-title>
           <ion-buttons slot="end">
-            <ion-button color="primary" (click)="updateNote()">Guardar</ion-button>
+            <ion-button aria-label="notes-edit-save" color="primary" (click)="updateNote()">Guardar</ion-button>
           </ion-buttons>
         </ion-toolbar>
       </ion-header>
 
+
       <ion-content>
         <ion-item lines="none" *ngIf="editingNote">
-          <ion-input [(ngModel)]="editingNote.title" placeholder="Título de la nota"></ion-input>
+          <ion-input aria-label="notes-edit-title-input" [(ngModel)]="editingNote.title" placeholder="Título de la nota"></ion-input>
         </ion-item>
+
 
         <ion-item lines="none" *ngIf="editingNote">
           <ion-textarea
+            aria-label="notes-edit-content-input"
             [(ngModel)]="editingNote.content"
             placeholder="Contenido de la nota"
             autoGrow="true">

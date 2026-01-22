@@ -1,25 +1,29 @@
 <ion-header>
   <ion-toolbar color="primary">
-    <ion-title>Crear cuenta</ion-title>
+    <ion-title aria-label="register-title">Crear cuenta</ion-title>
   </ion-toolbar>
 </ion-header>
 
-<ion-content class="ion-padding"> 
+
+<ion-content class="ion-padding">
   <ion-item>
     <ion-label position="floating">Correo Electronico</ion-label>
-    <ion-input [(ngModel)]="email" type="email" required></ion-input>
+    <ion-input aria-label="register-email" [(ngModel)]="email" type="email" required></ion-input>
   </ion-item>
+
 
   <ion-item>
     <ion-label position="floating">Contraseña</ion-label>
-    <ion-input [(ngModel)]="password" type="password" required></ion-input>
+    <ion-input aria-label="register-password" [(ngModel)]="password" type="password" required></ion-input>
   </ion-item>
 
-  <ion-button expand="block" color="succes" (click)="register()">
+
+  <ion-button aria-label="register-submit" expand="block" color="success" (click)="register()">
     Registrame
   </ion-button>
 
-  <ion-text color="medium" class="ion-text-center">
+
+  <ion-text aria-label="register-login-link" color="medium" class="ion-text-center">
     <p (click)="goToLogin()">¿Ya tienes una cuenta? Inicia Sesion</p>
   </ion-text>
 </ion-content>
