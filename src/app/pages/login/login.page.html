@@ -1,45 +1,69 @@
 <ion-header>
   <ion-toolbar color="primary">
-    <ion-title aria-label="login-title">Iniciar Sesion</ion-title>
+    <ion-title content-desc="login-title">
+      Iniciar Sesión
+    </ion-title>
   </ion-toolbar>
 </ion-header>
-
 
 <ion-content class="ion-padding">
   <ion-card>
     <ion-card-header>
-      <ion-title aria-label="login-welcome">Bienvenido 👋</ion-title>
+      <ion-title content-desc="login-welcome">
+        Bienvenido 👋
+      </ion-title>
     </ion-card-header>
 
-
-
-
     <ion-card-content>
-      <form (ngSubmit)="login()" aria-label="login-form">
-        <ion-item>
-          <ion-input aria-label="login-email" [(ngModel)]="email" name="email" type="email" placeholder="Correo electrónico" required></ion-input>
-        </ion-item>
-
+      <form (ngSubmit)="login()" content-desc="login-form">
 
         <ion-item>
-          <ion-input aria-label="login-password" [(ngModel)]="password" name="password" type="password" placeholder="password" required></ion-input>
+          <ion-input
+            content-desc="login-email"
+            [(ngModel)]="email"
+            name="email"
+            type="email"
+            placeholder="Correo electrónico"
+            required>
+          </ion-input>
         </ion-item>
 
+        <ion-item>
+          <ion-input
+            content-desc="login-password"
+            [(ngModel)]="password"
+            name="password"
+            type="password"
+            placeholder="Password"
+            required>
+          </ion-input>
+        </ion-item>
 
-        <ion-button aria-label="login-submit" expand="block" type="submit">
+        <ion-button
+          content-desc="login-submit"
+          expand="block"
+          type="submit">
           Ingresar
         </ion-button>
+
       </form>
 
-
-      <ion-button aria-label="login-reset" fill="clear" (click)="goToReset()">
+      <ion-button
+        content-desc="login-reset"
+        fill="clear"
+        (click)="goToReset()">
         ¿Olvidaste tu Contraseña?
       </ion-button>
 
-
-      <ion-text aria-label="login-register-link" color="medium" class="ion-text-center">
-        <p (click)="goToRegister()">¿No tienes cuenta? Registrate</p>
+      <ion-text
+        content-desc="login-register-link"
+        color="medium"
+        class="ion-text-center">
+        <p (click)="goToRegister()">
+          ¿No tienes cuenta? Regístrate
+        </p>
       </ion-text>
+
     </ion-card-content>
   </ion-card>
 </ion-content>
